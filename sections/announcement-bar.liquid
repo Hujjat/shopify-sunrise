@@ -1,5 +1,5 @@
 {% for block in section.blocks %}
-    <div class="{{ section.settings.text_align }}" style="background-color: {{ block.settings.bg_color }}; color: {{ block.settings.text_color }}">
+    <div class="py-3 {{ section.settings.text_align }}" style="background-color: {{ block.settings.bg_color }}; color: {{ block.settings.text_color }}">
       {{ block.settings.text }}
     </div>
 {% endfor %}
