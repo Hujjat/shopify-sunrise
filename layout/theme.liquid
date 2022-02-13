@@ -164,7 +164,6 @@
 
       html {
         box-sizing: border-box;
-        font-size: calc(var(--font-body-scale) * 62.5%);
         height: 100%;
       }
 
@@ -174,7 +173,7 @@
         grid-template-columns: 100%;
         min-height: 100%;
         margin: 0;
-        font-size: 1.5rem;
+        font-size: 1rem;
         letter-spacing: 0.06rem;
         line-height: calc(1 + 0.8 / var(--font-body-scale));
         font-family: var(--font-body-family);
@@ -182,14 +181,9 @@
         font-weight: var(--font-body-weight);
       }
 
-      @media screen and (min-width: 750px) {
-        body {
-          font-size: 1.6rem;
-        }
-      }
     {% endstyle %}
 
-    {{ 'base.css' | asset_url | stylesheet_tag }}
+    <!-- {{ 'base.css' | asset_url | stylesheet_tag }} -->
     
     <link rel="stylesheet" href="{{ 'app.css' | asset_url }}">
 
@@ -212,13 +206,13 @@
   </head>
 
   <body class="gradient">
-    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+    <a class="skip-to-content-link button sr-only" href="#MainContent">
       {{ "accessibility.skip_to_text" | t }}
     </a>
 
     {% section 'announcement-bar' %}
     {% section 'header' %}
-    <main id="MainContent" class="content-for-layout focus-none bg-blue-600 text-lg" role="main" tabindex="-1">
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
 

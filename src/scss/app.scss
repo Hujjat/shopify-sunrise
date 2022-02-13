@@ -2,3 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+// Header
+.header{
+    display: grid;
+    grid-template-areas: "header-logo header-menu header-icons";
+    grid-template-columns: 1fr 2fr 1fr;
+    .header__logo{
+        grid-area: header-logo;
+    }
+    .header__menu{
+        grid-area: header-menu;
+    }
+    .header__icons{
+        grid-area: header-icons;
+    }
+
+    @media (max-width: 768px) {
+        grid-template-areas: "header-menu header-logo header-icons";
+    }
+    // submenu
+    .nav__item{
+        &:hover{
+            .nav__item-submenu{
+                display: block;
+            }
+        }
+
+        .nav__item-submenu{
+            display: none;
+        }
+    }
+}
+
+// Helpers
+.page-width{
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+}
