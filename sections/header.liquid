@@ -1,7 +1,7 @@
 <div class="border-y">
   <header class="header items-center page-width">
   
-      <div class="header__logo mx-auto md:mr-auto md:ml-0" style="max-width: {{ section.settings.logo_width }}px;">
+      <div class="header__logo mx-auto my-2 md:my-0 md:mr-auto md:ml-0" style="max-width: {{ section.settings.logo_width }}px;">
         {% if section.settings.logo != blank %}
           <a href="/" class="header__logo">
             {{ section.settings.logo | image_url: width: 400 | image_tag: loading: 'lazy' }}
@@ -13,8 +13,8 @@
         {% endif %}
       </div>
   
-      <nav class="header__menu flex">
-        <button class="md:hidden" type="button">
+      <nav class="header__menu flex" x-data>
+        <button class="md:hidden" @click="$dispatch('toggle-menu')" type="button">
           {% render 'icon-menu', class: 'w-10' %}
         </button>
         <ul class="header__menu-nav hidden md:flex">
@@ -72,6 +72,8 @@
   
   </header>
 
+
+  {% render 'mobile-menu' %}
   
 
 </div>
