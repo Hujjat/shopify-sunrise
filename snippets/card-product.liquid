@@ -16,7 +16,7 @@
 
 
 {%- if card_product and card_product != empty -%}
-  <div class="card-wrapper border group">
+  <a href="{{ card_product.url }}" class="card-wrapper border group block">
     <div class="card">
 
         {% if card_product.featured_media %}
@@ -38,8 +38,12 @@
         <h3 class="card__title p-2">
           {{ card_product.title }}
         </h3>
+
+        {% render '_price-element', product: card_product %}
+        
+        
     </div>
-  </div>
+  </a>
 {%- else -%}
   <div class="card-wrapper underline-links-hover">
     <div class="card
