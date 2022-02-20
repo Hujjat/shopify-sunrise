@@ -8,8 +8,8 @@
             "type": "announcement",
             "settings": {
               "text": "<p>Welcome to our store<\/p>",
-              "bg_color": "#fff",
-              "text_color": "#000"
+              "bg_color": "#ffffff",
+              "text_color": "#000000"
             }
           }
         },
@@ -35,18 +35,12 @@
       "footer": {
         "type": "footer",
         "blocks": {
-          "footer-0": {
-            "type": "link_list",
+          "53c1c391-33d3-4045-94f0-77c637d06874": {
+            "type": "image",
             "settings": {
-              "heading": "Quick links",
-              "menu": "footer"
-            }
-          },
-          "footer-1": {
-            "type": "link_list",
-            "settings": {
-              "heading": "Info",
-              "menu": "footer"
+              "image": "shopify:\/\/shop_images\/unick-logo_1.png",
+              "image_width": 100,
+              "alignment": "center"
             }
           },
           "footer-2": {
@@ -55,24 +49,35 @@
               "heading": "Our mission",
               "subtext": "<p>Share contact information, store details, and brand content with your customers.<\/p>"
             }
+          },
+          "footer-0": {
+            "type": "link_list",
+            "settings": {
+              "heading": "Company",
+              "menu": "company"
+            }
+          },
+          "footer-1": {
+            "type": "link_list",
+            "settings": {
+              "heading": "Quick links",
+              "menu": "products"
+            }
           }
         },
         "block_order": [
+          "53c1c391-33d3-4045-94f0-77c637d06874",
+          "footer-2",
           "footer-0",
-          "footer-1",
-          "footer-2"
+          "footer-1"
         ],
         "settings": {
-          "color_scheme": "background-1",
-          "newsletter_enable": true,
-          "newsletter_heading": "Subscribe to our emails",
-          "show_social": true,
-          "enable_country_selector": false,
-          "enable_language_selector": false,
-          "payment_enable": true,
-          "margin_top": 48,
-          "padding_top": 36,
-          "padding_bottom": 36
+          "show_newsletter": false,
+          "newsletter_title": "",
+          "newsletter_subtitle": "",
+          "newsletter_html": "",
+          "copyright_text": "",
+          "payment_enable": true
         }
       },
       "main-password-header": {
@@ -141,10 +146,6 @@
             "footer-2"
           ],
           "settings": {
-            "show_social": true,
-            "enable_country_selector": false,
-            "enable_language_selector": false,
-            "margin_top": 48
           }
         },
         "main-password-header": {
