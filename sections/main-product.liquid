@@ -14,17 +14,7 @@
 
     <div class="product__media-wrapper col-span-2 grid grid-cols-2 gap-3">
       {% for media in product.media %}
-        {% if media.media_type == 'image' %}
-
-          <div class="media_wrapper {% if forloop.first %} col-span-2 {% endif %}">
-            {{ media | image_url: width: 1600 | image_tag: loading: 'lazy' }}
-          </div>
-        {% endif %}
-
-        {% if media.media_type == 'video' %}
-      
-          <video src="{{ media.url }}" controls muted></video>
-        {% endif %}
+          {% render 'media', media: media %}
       {% endfor %}
     </div>
 
@@ -41,12 +31,12 @@
               {{- block.settings.text -}}
             </p>
           {%- when 'title' -%}
-            <h1 class="product__title" {{ block.shopify_attributes }}>
+            <h1 class="product__title text-3xl py-3" {{ block.shopify_attributes }}>
               {{ product.title | escape }}
             </h1>
           {%- when 'price' -%}
             <div class="no-js-hidden" id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
-              {%- render 'price', product: product, use_variant: true, show_badges: true, price_class: 'price--large' -%}
+              {%- render '_price-element', product: product, class: 'text-lg font-medium' -%}
             </div>
             {%- if shop.taxes_included or shop.shipping_policy.body != blank -%}
               <div class="product__tax caption rte">
@@ -91,29 +81,37 @@
               </details>
             </div>
           {%- when 'quantity_selector' -%}
-            <div class="product-form__input product-form__quantity{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} product-form__quantity-top{% endif %}" {{ block.shopify_attributes }}>
-              <label class="form__label" for="Quantity-{{ section.id }}">
+            <div class="product-form__input product-form__quantity" {{ block.shopify_attributes }}>
+              <label class="form__label sr-only" for="Quantity-{{ section.id }}">
                 {{ 'products.product.quantity.label' | t }}
               </label>
 
-              <quantity-input class="quantity">
-                <button class="quantity__button no-js-hidden" name="minus" type="button">
-                  <span class="visually-hidden">{{ 'products.product.quantity.decrease' | t: product: product.title | escape }}</span>
+
+              <div class="product-qty__wrapper grid grid-cols-3 border" 
+                x-data="{ 
+                    qty: 1,
+                    minus(value) {
+                      (this.qty == 1) ? this.qty = 1 : this.qty -= value;
+                    },
+                    plus(value) {
+                      this.qty += value;
+                    }
+                  }">
+
+                <button type="button" class=" min-h-[48px] w-full flex items-center justify-center cursor-pointer" @click="minus(1)">
+                  <span class="sr-only">{{ 'products.product.quantity.decrease' | t: product: product.title | escape }}</span>
                   {% render 'icon-minus' %}
                 </button>
-                <input class="quantity__input"
-                    type="number"
-                    name="quantity"
-                    id="Quantity-{{ section.id }}"
-                    min="1"
-                    value="1"
-                    form="{{ product_form_id }}"
-                  >
-                <button class="quantity__button no-js-hidden" name="plus" type="button">
-                  <span class="visually-hidden">{{ 'products.product.quantity.increase' | t: product: product.title | escape }}</span>
+
+                <input type="number" x-model="qty" name="quantity" class="product-qty__input border-x text-center" value="1" min="1" max="10">
+
+                <button type="button" class=" min-h-[48px] w-full flex items-center justify-center cursor-pointer" @click="plus(1)">
+                  <span class="sr-only">{{ 'products.product.quantity.increase' | t: product: product.title | escape }}</span>
                   {% render 'icon-plus' %}
                 </button>
-              </quantity-input>
+
+              </div>
+
             </div>
           {%- when 'popup' -%}
               <modal-opener class="product-popup-modal__opener no-js-hidden" data-modal="#PopupModal-{{ block.id }}" {{ block.shopify_attributes }}>
@@ -252,7 +250,7 @@
                     <button
                       type="submit"
                       name="add"
-                      class="product-form__submit button button--full-width {% if block.settings.show_dynamic_checkout and product.selling_plan_groups == empty %}button--secondary{% else %}button--primary{% endif %}"
+                      class="product-form__submit button button--full-width button__primary w-full justify-center {% if block.settings.show_dynamic_checkout and product.selling_plan_groups == empty %}button--secondary{% else %}button--primary{% endif %}"
                     {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}
                     >
                         <span>
