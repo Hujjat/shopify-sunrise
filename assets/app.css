@@ -477,6 +477,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 .relative {
   position: relative;
 }
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+}
 .inset-0 {
   top: 0px;
   right: 0px;
@@ -502,6 +506,15 @@ Ensure the default browser behavior of the `hidden` attribute.
 .right-0 {
   right: 0px;
 }
+.top-10 {
+  top: 2.5rem;
+}
+.top-14 {
+  top: 3.5rem;
+}
+.top-12 {
+  top: 3rem;
+}
 .isolate {
   isolation: isolate;
 }
@@ -510,6 +523,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .z-20 {
   z-index: 20;
+}
+.col-span-2 {
+  grid-column: span 2 / span 2;
 }
 .mx-auto {
   margin-left: auto;
@@ -539,6 +555,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .ml-3 {
   margin-left: 0.75rem;
+}
+.mt-7 {
+  margin-top: 1.75rem;
 }
 .block {
   display: block;
@@ -616,6 +635,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 .grid-cols-4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
 .flex-col {
   flex-direction: column;
 }
@@ -640,6 +665,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 .gap-2 {
   gap: 0.5rem;
 }
+.gap-6 {
+  gap: 1.5rem;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
@@ -649,6 +680,9 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-space-x-reverse: 0;
   margin-right: calc(1.25rem * var(--tw-space-x-reverse));
   margin-left: calc(1.25rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.self-start {
+  align-self: flex-start;
 }
 .overflow-hidden {
   overflow: hidden;
