@@ -25,7 +25,7 @@
                   <ul class="nav__item-submenu absolute bg-white border py-3 px-4 min-w-[160px] top-16 left-1/2 transform -translate-x-1/2">
                     {% for sublink in linklists[link.handle].links %}
                       <li>
-                        <a href="{{ sublink.url }}">
+                        <a class="block py-1 hover:opacity-75 " href="{{ sublink.url }}">
                           {{ sublink.title }}
                         </a>
                       </li>

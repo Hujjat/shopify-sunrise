@@ -35,12 +35,12 @@
             {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
+
         <h3 class="card__title p-2">
           {{ card_product.title }}
         </h3>
 
-        {% render '_price-element', product: card_product %}
-
+        {% render '_price-element', product: card_product, class: 'px-2 pb-2' %}
         
     </div>
   </a>
