@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+// variables
+$btn-height: 44px;
+
 // Header
 .header{
     display: grid;
@@ -45,9 +48,14 @@
 .shopify-payment-button{
     button{
         @apply bg-black text-white rounded-sm;
+        min-height: $btn-height !important;
+    }
+    .shopify-payment-button__more-options{
+        @apply mt-2
     }
 }
 
 .button__primary{
-    @apply bg-black text-white my-2 py-3 px-6 rounded-sm flex items-center;
+    @apply bg-black text-white my-2 px-6 rounded-sm flex items-center;
+    min-height: $btn-height;
 }

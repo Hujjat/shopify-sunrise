@@ -1,5 +1,5 @@
 {% if product.available %}
-    <div class="price__element pb-2 text-gray-600 {{ class }}">
+    <div class="price__element text-gray-600 {{ class }}">
         {% if product.compare_at_price > product.price %}
         <div class="price__element-sale">
             <span class="sr-only">{{ 'products.product.price.sale_price' | t }}</span>

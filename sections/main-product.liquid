@@ -14,7 +14,11 @@
 
     <div class="product__media-wrapper col-span-2 grid grid-cols-2 gap-3">
       {% for media in product.media %}
-          {% render 'media', media: media %}
+          {% if forloop.first %}
+            {% render 'media', media: media, class: 'col-span-2' %}
+          {% else %}
+            {% render 'media', media: media %}
+          {% endif %}
       {% endfor %}
     </div>
 
@@ -56,7 +60,7 @@
             </div>
           {%- when 'description' -%}
             {%- if product.description != blank -%}
-              <div class="product__description rte">
+              <div class="product__description rte my-3">
                 {{ product.description }}
               </div>
             {%- endif -%}
@@ -85,9 +89,7 @@
               <label class="form__label sr-only" for="Quantity-{{ section.id }}">
                 {{ 'products.product.quantity.label' | t }}
               </label>
-
-
-              <div class="product-qty__wrapper grid grid-cols-3 border" 
+              <div class="product-qty__wrapper grid grid-cols-3 border border-black" 
                 x-data="{ 
                     qty: 1,
                     minus(value) {
@@ -98,14 +100,14 @@
                     }
                   }">
 
-                <button type="button" class=" min-h-[48px] w-full flex items-center justify-center cursor-pointer" @click="minus(1)">
+                <button type="button" class=" min-h-[44px] w-full flex items-center justify-center cursor-pointer" @click="minus(1)">
                   <span class="sr-only">{{ 'products.product.quantity.decrease' | t: product: product.title | escape }}</span>
                   {% render 'icon-minus' %}
                 </button>
 
-                <input type="number" x-model="qty" name="quantity" class="product-qty__input border-x text-center" value="1" min="1" max="10">
+                <input type="number" x-model="qty" name="quantity" class="product-qty__input border-x text-center border-black" value="1" min="1" max="10">
 
-                <button type="button" class=" min-h-[48px] w-full flex items-center justify-center cursor-pointer" @click="plus(1)">
+                <button type="button" class=" min-h-[44px] w-full flex items-center justify-center cursor-pointer" @click="plus(1)">
                   <span class="sr-only">{{ 'products.product.quantity.increase' | t: product: product.title | escape }}</span>
                   {% render 'icon-plus' %}
                 </button>
