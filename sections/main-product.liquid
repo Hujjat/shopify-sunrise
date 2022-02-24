@@ -233,14 +233,35 @@
               </div>
             </noscript>
           {%- when 'buy_buttons' -%}
-            <div x-data="{qty: 1}">
+            <div x-data="{ 
+                qty: 1,
+                addToCart(){
+                  let formData = new FormData($refs.product_form);
+
+                  fetch('/cart/add.js', {
+                      method: 'POST',
+                      body: formData
+                    })
+                    .then(response => {
+                      return response.json();
+                    })
+                    .then(response => {
+                      console.log(response);
+                    })
+                    .catch((error) => {
+                      console.error('Error:', error);
+                    });
+
+                }
+              }">
              
-                {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', x-ref: 'product_form' -%}
                   <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                   <div class="product-form__buttons">
                     <button
-                      type="submit"
+                      type="button"
                       name="add"
+                      @click="addToCart()"
                       class="add-to-cart-button  button__primary w-full justify-center"
                     {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}
                     >
