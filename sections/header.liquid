@@ -64,6 +64,7 @@
           <button 
             type="button"
             title="Cart button"
+            @click="$dispatch('toggle-cart')"
             class="header__icon text-center">
               {% render 'icon-cart', class: 'w-10' %}
               <span class="sr-only">{{ 'templates.cart.cart' | t }}</span>

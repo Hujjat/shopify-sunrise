@@ -1,0 +1,67 @@
+<!-- This example requires Tailwind CSS v2.0+ -->
+<div class="fixed inset-0 overflow-hidden z-20"
+    x-data="{ showCartDrawer: false }"
+    x-show="showCartDrawer"
+    @toggle-cart.window="showCartDrawer = !showCartDrawer"
+     aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 overflow-hidden">
+      
+      <div class="absolute inset-0 bg-gray-500 bg-opacity-75" x-show="showCartDrawer" x-transition.opacity @click="showCartDrawer = false" aria-hidden="true"></div>
+      <div class="fixed inset-y-0 right-0 max-w-full flex">
+       
+        <div class="relative w-screen max-w-xs md:max-w-md" 
+            x-show="showCartDrawer"
+            x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700" 
+            x-transition:enter-start="translate-x-full opacity-0" 
+            x-transition:enter-end="translate-x-0 opacity-100" 
+            x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700" 
+            x-transition:leave-start="translate-x-0" 
+            x-transition:leave-end="translate-x-full opacity-0"
+            >
+          <div class="absolute top-0 left-0 -ml-8 pt-4 pr-2 flex sm:-ml-10 sm:pr-4">
+            <button type="button" 
+                @click="showCartDrawer = false" 
+                class="rounded-md text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
+              <span class="sr-only">Close panel</span>
+              <!-- Heroicon name: outline/x -->
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+  
+          <div class="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-scroll">
+            <div class="px-4 sm:px-6">
+              Cart Header
+            </div>
+            <div class="mt-6 relative flex-1 px-4 sm:px-6">
+               
+                {% for item in cart.items %}
+                    
+                    <div class="flex items-center justify-between px-4 py-2">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <img class="w-28" src="{{ item.image | img_url: '400x' }}" alt="">
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm leading-5 font-medium text-gray-900">{{ item.variant.title }}</div>
+                                <div class="mt-1 text-sm leading-5 text-gray-500">{{ item.variant.price | money }}</div>
+                            </div>
+                        </div>
+                        <div class="ml-4 flex-shrink-0">
+                            <div class="text-sm leading-5 text-gray-500">{{ item.quantity }}</div>
+                        </div>
+                    </div>
+                  
+                    
+                {% endfor %}
+
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  
