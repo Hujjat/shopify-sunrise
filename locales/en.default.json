@@ -39,6 +39,12 @@
       "search": "Search"
     },
     "cart": {
+      "title": "Your cart",
+      "continue_shopping": "Continue shopping",
+      "cart_empty_title_html": "Your cart is Empty ",
+      "subtotal": "Subtotal:",
+      "checkout": "Checkout",
+      "saving": "Total Savings:",
       "view": "View my cart ({{ count }})",
       "item_added": "Item added to your cart"
     },
