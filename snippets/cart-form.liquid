@@ -83,13 +83,19 @@
                                     <div class="w-full flex-none text-xs font-medium text-gray-500 mt-2">{{ item.variant.title }}</div>
                                 {% endif %}
                                 
-                                <div class="flex w-5/6 md:w-1/2 mt-2">
-                                    <button type="button" title="decrease quantity" class="text-center cursor-pointer p-1 border border-gray-600 w-3/12">
+                                <div class="flex w-5/6 md:w-1/2 mt-2" x-data="{ qty: {{ item.quantity }}}">
+                                    <button type="button"
+                                         title="decrease quantity"
+                                         @click.debounce="Sunrise.updateQuantity({{ forloop.index }}, --qty)"
+                                         class="text-center cursor-pointer p-1 border border-gray-600 w-3/12">
                                         &minus;
                                     </button>
                                     <input class="text-center bg-white border-t border-b border-gray-600 w-6/12 border-l-0 border-r-0" type="text" type="number" min="1" size="2" value="{{ item.quantity }}" name="quantity">
     
-                                    <button type="button" title="increase quantity" class="text-center cursor-pointer  p-1 border border-gray-600 w-3/12">
+                                    <button type="button" 
+                                        title="increase quantity" 
+                                        @click.debounce="Sunrise.updateQuantity({{ forloop.index }}, ++qty)"
+                                        class="text-center cursor-pointer  p-1 border border-gray-600 w-3/12">
                                         &plus;
                                     </button>
                                 </div>
@@ -98,6 +104,7 @@
     
                             <button type="button" 
                                 title="remove {{ item.product.title }}"
+                                @click="Sunrise.updateQuantity({{ forloop.index }}, 0)"
                                 class="w-5 h-5 cursor-pointer flex items-center justify-center absolute right-0 top-3 rounded-full bg-gray-300">
                                 {% render 'icon-close', class: 'w-3' %}
                             </button>
