@@ -246,7 +246,8 @@
                       return response.json();
                     })
                     .then(response => {
-                      console.log(response);
+                      this.$dispatch('cart-updated');
+                      this.$dispatch('toggle-cart');
                     })
                     .catch((error) => {
                       console.error('Error:', error);
