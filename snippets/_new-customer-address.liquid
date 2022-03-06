@@ -116,7 +116,7 @@
                                           <label for="country" class="block text-sm font-medium text-gray-700">
                                             {{ 'customer.addresses.country' | t }}
                                           </label>
-                                          <select 
+                                          <select  x-ref="address_country"
                                             name="address[country]"
                                             @change="province = JSON.parse($event.target.selectedOptions[0].dataset.provinces); address.country = $event.target.selectedOptions[0].text;"
                                             value="{{ form.country }}"
