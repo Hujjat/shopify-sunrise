@@ -13,7 +13,6 @@ let Sunrise = {
         .then(data => { 
             // fire javascript event on window
             window.dispatchEvent(new Event('cart-updated'))
-            
         })
         .catch((error) => { 
             console.error('Error:', error);
