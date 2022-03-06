@@ -1,7 +1,7 @@
 
 
 <div class="page-width px-4"
-    @cart-updated.window="updateCart; loading = false;"
+    @cart-updated.window="updateCart;"
     @toggle-cart.window="showCartDrawer = !showCartDrawer"
     x-data="{
       loading: false,
@@ -16,6 +16,7 @@
               el.innerHTML = cartData;
               var cartCount = JSON.parse(el.querySelector('[data-options]').innerHTML).item_count;
               $dispatch('cart-count-updated', cartCount);
+              this.loading = false;
           })
       }
     }">
