@@ -1,0 +1,154 @@
+<form action="{{ routes.cart_url }}" method="post" class="h-full relative">
+
+    <div class="mt-6 relative flex-1 h-full">
+        {% if cart.item_count > 0 %}
+            <div class="relative md:grid grid-cols-3">
+                {% assign total_savings = 0 %}
+                <div class="md:pr-7 md:border-r border-gray-600 col-span-2">
+                    {% for item in cart.items %}
+                        <div class="cart-item">
+                            <div class="flex py-3 border-color w-full items-center relative 
+                                {% unless forloop.last %} border-b border-gray-400 {% endunless %}">
+                                <div class="w-4/12">
+                                    {% if item.image %}
+                                        {{ item.image | image_url: width: 400 | image_tag: loading: 'lazy', class:'w-full pr-3' }}
+                                    {% else %}
+                                        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                                    {% endif %}
+                                </div>
+        
+                                <div class="w-8/12">
+        
+                                    <h3 class="text-lg font-medium w-10/12">
+                                        <a href="{{ item.url }}" title="{{ item.product.title }}" class="w-5/6">{{ item.product.title }}</a>
+                                    </h3>
+        
+                                    {% if item.line_level_discount_allocations.size > 0 %}
+                                        {% assign item_discount = item.original_price | minus: item.price %}
+        
+                                        <div class="font-medium text-gray-500 mt-2">
+                                            <span class="money text-red-700">
+                                                {{ item.price | money_with_currency }}
+                                            </span>
+                                            <s class="text-gray-500">
+                                                {{ item.original_price | money_with_currency }}
+                                            </s>
+                                        </div>
+        
+                                        {% for discount_allocation in item.line_level_discount_allocations %}
+                                            <div class="text-xs font-bold text-green-700 mt-2">
+                                                <i>{{ discount_allocation.discount_application.title }}</i>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="mt-2 font-medium">
+                                            <span class="money {% if item.product.compare_at_price > item.price %} text-red-700{% endif %}">
+                                                {{ item.price | money_with_currency }}
+                                            </span>
+                                            {% if item.product.compare_at_price > item.price %}
+                                                {% assign item_saving = item.product.compare_at_price | minus: item.price %}
+                                                {% assign total_savings = total_savings | plus: item_saving %}
+                                                <s class="text-gray-500">
+                                                    {{ item.product.compare_at_price | money_with_currency }}
+                                                </s>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+
+                                    {% if item.selling_plan_allocation.price > 0 %}
+                                        <div class="cart_subscription text-sm">
+                                            <p class="cart_subscription--messsage">
+                                            Delivery: {{ item.selling_plan_allocation.selling_plan.name }}
+                                            </p>
+                                            <span class="cart_subscription--discount font-semibold text-green-700">
+                                            You saved extra {{ item.selling_plan_allocation.selling_plan.price_adjustments[0].value }}{% if item.selling_plan_allocation.selling_plan.price_adjustments[0].value_type == 'percentage' %}% {% endif %}
+                                            </span>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    {% if item.variant.title != 'Default Title' and item.variant.title != 'No Color / OS' and item.variant.title != 'NC / OS' %}
+                                        <div class="w-full flex-none text-xs font-medium text-gray-500 mt-2">{{ item.variant.title }}</div>
+                                    {% endif %}
+                                    
+                                    <div class="flex w-5/6 md:w-1/2 mt-2 max-w-[200px]" x-data="{ qty: {{ item.quantity }}}">
+                                        <button type="button"
+                                            title="decrease quantity"
+                                            @click.debounce="loading = true; Sunrise.updateQuantity({{ forloop.index }}, --qty);"
+                                            class="text-center cursor-pointer p-1 border border-gray-600 w-3/12">
+                                            &minus;
+                                        </button>
+                                        <input class="text-center bg-white border-t border-b border-gray-600 w-6/12 border-l-0 border-r-0" type="text" type="number" min="1" size="2" value="{{ item.quantity }}" name="quantity">
+        
+                                        <button type="button" 
+                                            title="increase quantity" 
+                                            @click.debounce="loading = true; Sunrise.updateQuantity({{ forloop.index }}, ++qty)"
+                                            class="text-center cursor-pointer  p-1 border border-gray-600 w-3/12">
+                                            &plus;
+                                        </button>
+                                    </div>
+                                    
+                                </div>
+        
+                                <button type="button" 
+                                    title="remove {{ item.product.title }}"
+                                    @click="loading = true; Sunrise.updateQuantity({{ forloop.index }}, 0)"
+                                    class="w-5 h-5 cursor-pointer flex items-center justify-center absolute right-0 top-3 rounded-full bg-gray-300">
+                                    {% render 'icon-close', class: 'w-3' %}
+                                </button>
+        
+                            </div>
+                        </div>  
+                    {% endfor %}
+                </div>
+
+                <div class="w-full bg-white md:pl-7 col-span-1">
+
+                    <div class="cart__note flex flex-col py-3">
+                        <label for="Cart-note" class="inline-block font-medium pb-2">{{ 'sections.cart.note' | t }}</label>
+                        <textarea 
+                        class="text-area border p-3 border-gray-600" name="note" id="Cart-note" placeholder="{{ 'sections.cart.note' | t }}">{{ cart.note }}</textarea>
+                    </div>
+
+                    {%- if cart.cart_level_discount_applications.size > 0 -%}
+                        <div class="total-discounts flex justify-between font-medium pb-2  text-green-700" aria-label="{{ 'customer.order.discount' | t }}">
+                            {%- for discount in cart.cart_level_discount_applications -%}
+                                <i class="flex space-x-1"> 
+                                    {% render 'icon-discount', class: 'w-4 mr-1' %}
+                                    <span>{{ discount.title }} </span>
+                                </i>
+                                <span>(-{{ discount.total_allocated_amount | money }})</span>
+                            {%- endfor -%}
+                        </div>
+                    {%- endif -%}
+
+                    {% if total_savings > 0 %}
+                        <div class="sub-total flex justify-between text-base pb-2  text-red-700">
+                            <span> {{ 'general.cart.saving' | t }}</span>
+                            <span>-{{ total_savings | money_with_currency }}</span>
+                        </div>
+                    {% endif %}
+        
+                    <div class="sub-total flex justify-between text-base pb-2">
+                        <span> {{ 'general.cart.subtotal' | t }}</span>
+                        <span>{{ cart.total_price | money_with_currency }}</span>
+                    </div>
+
+        
+                    <button name="checkout" type="submit" class="w-full text-sm px-5 py-2 flex justify-center items-center text-center button__primary cursor-pointer mt-2">
+                        {{ 'general.cart.checkout' | t }}
+                    </button>
+        
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-cart text-center max-w-xs md:max-w-md px-4">
+                {% render 'icon-cart', class: 'mx-auto w-8 h-8' %}
+                <h4 class="text-lg heading-font py-2 !font-bold"> {{ 'general.cart.cart_empty_title_html' | t }} </h4>
+                <button @click="$dispatch('toggle-cart')" type="button" class="inline-block mx-auto px-8 py-2 text-sm text-center  w-full font-medium">
+                    {{ 'general.cart.continue_shopping' | t }}
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+</form>

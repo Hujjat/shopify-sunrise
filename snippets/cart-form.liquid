@@ -16,7 +16,6 @@
         {% if cart.item_count > 0 %}
         <div class="flex flex-col overflow-y-scroll justify-between h-full pb-28 font-medium no-scrollbar relative">
             {% assign total_savings = 0 %}
-
             <div class="">
                 {% for item in cart.items %}
                     <div class="cart-item">
@@ -113,7 +112,6 @@
                     </div>  
                 {% endfor %}
             </div>
-
             <div class="max-w-xs md:max-w-md w-full bg-white border-t-2 border-gray-600 fixed bottom-0 right-0 p-4">
 
 
@@ -147,7 +145,6 @@
                 </button>
     
             </div>
-
         </div>
         {% else %}
             <div class="empty-cart text-center max-w-xs md:max-w-md px-4">
