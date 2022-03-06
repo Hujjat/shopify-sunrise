@@ -1,0 +1,9 @@
+{% layout none %}
+<template data-options>
+    {
+      "item_count": {{ cart.item_count | json }},
+      "cart_total": {{ cart.total_price | json }}
+    }
+</template>
+
+{% render 'cart-page-form' %}

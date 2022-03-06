@@ -1,15 +1,37 @@
 
 
-<div class="page-width px-4 sm:px-6">
+<div class="page-width px-4 sm:px-6"
+    @cart-updated.window="updateCart; loading = false;"
+    @toggle-cart.window="showCartDrawer = !showCartDrawer"
+    x-data="{
+      loading: false,
+      updateCart(){
+          // send fetch reqeust to update cart
+          fetch('/?view=cart-page')
+          .then(response => response.text())
+          .then(cartData => {
+              $refs.cart_content.innerHTML = cartData;
+              // This code is use to parse json object. for cart count
+              var el = document.createElement('div');
+              el.innerHTML = cartData;
+              var cartCount = JSON.parse(el.querySelector('[data-options]').innerHTML).item_count;
+              $dispatch('cart-count-updated', cartCount);
+          })
+      }
+    }">
 
-  <div class="py-4 flex items-center justify-between">
-    <h1 class="title text-3xl">{{ 'sections.cart.title' | t }}</h1>
-    <a href="{{ routes.all_products_collection_url }}" class="underline py-2">{{ 'general.continue_shopping' | t }}</a>
-  </div>
+    <div class="py-4 flex items-center justify-between">
+      <h1 class="title text-3xl">{{ 'sections.cart.title' | t }}</h1>
+      <a href="{{ routes.all_products_collection_url }}" class="underline py-2">{{ 'general.continue_shopping' | t }}</a>
+    </div>
 
-  <hr>
+    <hr>
 
-  {% render 'cart-page-form' %}
+    {% render 'loader' %}
+
+    <div class="" x-ref="cart_content">
+      {% render 'cart-page-form' %}
+    </div>
 
 </div>
 
