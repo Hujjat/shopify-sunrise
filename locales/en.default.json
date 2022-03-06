@@ -300,6 +300,8 @@
       "title": "Account",
       "details": "Account details",
       "view_addresses": "View addresses",
+      "default_address": "Default address",
+      "logout": "Logout",
       "return": "Return to Account details"
     },
     "account_fallback": "Account",

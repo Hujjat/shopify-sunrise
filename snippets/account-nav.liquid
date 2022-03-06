@@ -1,0 +1,26 @@
+<ul class="flex flex-col w-full text-base font-medium divide-y divide-gray-300">
+    <li class="my-px"> 
+        <a href="{{ routes.account_url }}" 
+            class="{% if request.path == '/account' %} border-r-2 border-black {% endif %}
+                flex flex-row items-center h-10 md:px-2">
+            <span>{{ 'customer.account.details' | t }}</span>
+        </a>
+    </li>
+
+    
+    <li class="my-px">
+        <a href="{{ routes.account_addresses_url }}" 
+            class="{% if request.path == '/account/addresses' %}  border-r-2 border-black {% endif %}
+            flex flex-row items-center h-10 md:px-2">
+            <span>{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }}) </span>
+        </a>
+    </li>
+    
+    <li class="my-px">
+        <a href="{{ routes.account_logout_url }}" 
+            class="flex flex-row items-center h-10 md:px-2">
+            <span>{{ 'customer.account.logout' | t }} </span>
+        </a>
+    </li>
+
+</ul>
