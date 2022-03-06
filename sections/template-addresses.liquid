@@ -24,8 +24,10 @@
                 </div>
 
                 <div class="mt-5 md:mt-0 md:col-span-3"
-                    x-init="province = JSON.parse($refs.address_country.selectedOptions[0].dataset.provinces);"
-                    x-data="{ openDelete: false, openNew: false, deleteId: null, province: [] ,openEdit: false, address: {{ customer.addresses[1] | json | escape }} }">
+                    x-init="$nextTick(() => {
+                        province = JSON.parse($refs.address_country.selectedOptions[0].dataset.provinces);
+                    })"
+                    x-data="{ openDelete: false, openNew: false, deleteId: null, province: [] ,openEdit: false, address: {{ customer.addresses[0] | json | escape }} }">
                     <div class="sm:overflow-hidden">
                         <div class="">
                             <h3 class="text-2xl font-bold px-3 pb-2">{{ 'customer.account.view_addresses' | t }}</h3>
