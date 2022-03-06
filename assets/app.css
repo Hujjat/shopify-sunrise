@@ -515,6 +515,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bottom-0 {
   bottom: 0px;
 }
+.-top-3 {
+  top: -0.75rem;
+}
+.-right-1 {
+  right: -0.25rem;
+}
 .isolate {
   isolation: isolate;
 }
@@ -554,6 +560,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 .-ml-8 {
   margin-left: -2rem;
 }
+.-ml-1 {
+  margin-left: -0.25rem;
+}
+.mr-3 {
+  margin-right: 0.75rem;
+}
 .mr-1 {
   margin-right: 0.25rem;
 }
@@ -565,12 +577,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .ml-3 {
   margin-left: 0.75rem;
-}
-.-ml-1 {
-  margin-left: -0.25rem;
-}
-.mr-3 {
-  margin-right: 0.75rem;
 }
 .block {
   display: block;
@@ -596,17 +602,23 @@ Ensure the default browser behavior of the `hidden` attribute.
 .h-6 {
   height: 1.5rem;
 }
-.h-full {
-  height: 100%;
-}
 .h-5 {
   height: 1.25rem;
+}
+.h-full {
+  height: 100%;
 }
 .h-8 {
   height: 2rem;
 }
 .min-h-\[44px\] {
   min-height: 44px;
+}
+.min-h-\[220x\] {
+  min-height: 220x;
+}
+.min-h-\[22px\] {
+  min-height: 22px;
 }
 .w-10 {
   width: 2.5rem;
@@ -619,6 +631,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .w-6 {
   width: 1.5rem;
+}
+.w-5 {
+  width: 1.25rem;
 }
 .w-4\/12 {
   width: 33.333333%;
@@ -638,9 +653,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-6\/12 {
   width: 50%;
 }
-.w-5 {
-  width: 1.25rem;
-}
 .w-3 {
   width: 0.75rem;
 }
@@ -655,6 +667,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .min-w-\[160px\] {
   min-width: 160px;
+}
+.min-w-\[22px\] {
+  min-width: 22px;
 }
 .max-w-full {
   max-width: 100%;
@@ -839,18 +854,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-bg-opacity: 1;
   background-color: rgb(107 114 128 / var(--tw-bg-opacity));
 }
+.bg-black\/20 {
+  background-color: rgb(0 0 0 / 0.2);
+}
 .bg-gray-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
-.bg-black\/90 {
-  background-color: rgb(0 0 0 / 0.9);
-}
-.bg-black\/10 {
-  background-color: rgb(0 0 0 / 0.1);
-}
-.bg-black\/20 {
-  background-color: rgb(0 0 0 / 0.2);
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 .bg-opacity-75 {
   --tw-bg-opacity: 0.75;
@@ -992,6 +1005,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity));
+}
 .text-gray-500 {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity));
@@ -999,10 +1016,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-green-700 {
   --tw-text-opacity: 1;
   color: rgb(21 128 61 / var(--tw-text-opacity));
-}
-.text-black {
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 .opacity-0 {
   opacity: 0;

@@ -9,6 +9,13 @@
             .then(response => response.text())
             .then(cartData => {
                 $refs.cart_content.innerHTML = cartData;
+
+                // This code is use to parse json object. for cart count
+                var el = document.createElement('div');
+                el.innerHTML = cartData;
+                var cartCount = JSON.parse(el.querySelector('[data-options]').innerHTML).item_count;
+                $dispatch('cart-count-updated', cartCount);
+
             })
         }
      }"

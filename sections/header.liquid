@@ -17,6 +17,7 @@
         <button class="md:hidden" @click="$dispatch('toggle-menu')" type="button">
           {% render 'icon-menu', class: 'w-10' %}
         </button>
+
         <ul class="header__menu-nav hidden md:flex">
           {% for link in section.settings.menu.links %}
             {% if link.links != blank %}
@@ -41,7 +42,9 @@
         </ul>
       </nav>
   
-      <div class="header__icons flex items-center justify-end space-x-5">
+      <div class="header__icons flex items-center justify-end space-x-5"
+        x-data="{ cart_count: {{ cart.item_count }} }"
+        @cart-count-updated.window="cart_count = $event.detail">
         {%- if shop.customer_accounts_enabled -%}
           <div class="relative account-menu-wrapper z-10">
             <a href="{{ routes.account_url }}" 
@@ -65,9 +68,10 @@
             type="button"
             title="Cart button"
             @click="$dispatch('toggle-cart')"
-            class="header__icon text-center">
+            class="header__icon text-center relative">
               {% render 'icon-cart', class: 'w-10' %}
               <span class="sr-only">{{ 'templates.cart.cart' | t }}</span>
+              <span x-text="cart_count" class="cart__count min-w-[22px] text-sm min-h-[22px] absolute grid place-content-center rounded-full -top-3 -right-1 text-white bg-black"> {{ cart.item_count }} </span>
           </button>
       </div>
   
