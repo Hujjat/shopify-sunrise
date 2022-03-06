@@ -339,6 +339,7 @@
     "login_page": {
       "cancel": "Cancel",
       "create_account": "Create account",
+      "create_message": "Don’t Have An Account?",
       "email": "Email",
       "forgot_password": "Forgot your password?",
       "guest_continue": "Continue",
@@ -390,6 +391,7 @@
     "register": {
       "title": "Create account",
       "first_name": "First name",
+      "back": "Back to login",
       "last_name": "Last name",
       "email": "Email",
       "password": "Password",
