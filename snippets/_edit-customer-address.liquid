@@ -1,0 +1,198 @@
+<div class="fixed z-10 inset-0 overflow-y-auto" 
+        x-cloak 
+        x-show="openEdit" 
+        x-transition.opacity
+        aria-modal="true" 
+        aria-labelledby="modal-headline">
+
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+
+            <div class="fixed inset-0 bg-[#0000004f]" x-show="openEdit" @click="openEdit = false;"></div>
+            <!-- This element is to trick the browser into centering the modal contents. -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    
+            <div class="inline-block align-bottom bg-white text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-screen-md sm:w-full rounded-sm" role="dialog" aria-modal="true" aria-labelledby="{{ 'customer.addresses.add_new' | t }}">
+               
+                <form method="post" :action="'/account/addresses/'+address.id" accept-charset="UTF-8" >
+
+                    <input type="hidden" name="form_type" value="customer_address">
+                    <input type="hidden" name="utf8" value="✓">
+
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="update-address-form">
+                                <h3 class="text-lg font-medium leading-6 text-gray-900 pb-3">{{ 'customer.addresses.edit_address' | t }}</h3>
+                                <div class="grid grid-cols-6 gap-3">
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label :for="'first_name'+address.id" class="block text-sm font-medium text-gray-900">
+                                        {{ 'customer.addresses.first_name' | t }}
+                                        </label>
+                                        <input type="text" 
+                                            name="address[first_name]"
+                                            :value="address.first_name"
+                                            autocapitalize="words"
+                                            required
+                                            :id="'first_name'+address.id" 
+                                            class="mt-2 focus:ring-indigo-500 p-2 focus:border-indigo-500 block w-full border sm:text-sm border-gray-300">
+                                    </div>
+                        
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label :for="'last_name'+address.id" class="block text-sm font-medium text-gray-700">
+                                            {{ 'customer.addresses.last_name' | t }}
+                                        </label>
+                                        <input type="text"
+                                            name="address[last_name]"
+                                            :value="address.last_name"
+                                            :id="'last_name'+address.id"
+                                            required
+                                            autocapitalize="words"
+                                            class="mt-2 focus:ring-indigo-500 p-2 focus:border-indigo-500 block w-full border sm:text-sm border-gray-300">
+                                    </div>
+                        
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label :for="'company'+address.id" class="block text-sm font-medium text-gray-700">
+                                            {{ 'customer.addresses.company' | t }}
+                                        </label>
+                                        <input type="text"
+                                            name="address[company]"
+                                            :value="address.company"
+                                            :id="'company'+address.id"
+                                            autocapitalize="words"
+                                            class="mt-2 focus:ring-indigo-500 p-2 focus:border-indigo-500 block w-full border sm:text-sm border-gray-300">
+                                    </div>
+
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label :for="'phone'+address.id" class="block text-sm font-medium text-gray-700">
+                                            {{ 'customer.addresses.phone' | t }}
+                                        </label>
+                                        <input type="tel"
+                                                name="address[phone]"
+                                                :value="address.phone"
+                                                :id="'phone'+address.id"
+                                                autocapitalize="words"
+                                                class="mt-2 focus:ring-indigo-500 p-2 focus:border-indigo-500 block w-full border sm:text-sm border-gray-300">
+                                        </div>
+
+                                    <div class="col-span-6">
+                                        <label :for="'address1'+address.id" class="block text-sm font-medium text-gray-700">
+                                            {{ 'customer.addresses.address1' | t }}
+                                        </label>
+                                        <input type="text"
+                                            name="address[address1]"
+                                            :value="address.address1"
+                                            :id="'address1'+address.id"
+                                            required
+                                            autocapitalize="words"
+                                            class="mt-2 focus:ring-indigo-500 p-2 focus:border-indigo-500 block w-full border sm:text-sm border-gray-300">
+                                    </div>
+
+                                    <div class="col-span-6">
+                                        <label :for="'address2'+address.id" class="block text-sm font-medium text-gray-700">
+                                            {{ 'customer.addresses.address2' | t }}
+                                        </label>
+                                        <input type="text"
+                                            name="address[address2]"
+                                            :value="address.address2"
+                                            :id="'address2'+address.id"
+                                            autocapitalize="words"
+                                            class="mt-2 focus:ring-indigo-500 p-2 focus:border-indigo-500 block w-full border sm:text-sm border-gray-300">
+                                    </div>
+
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label :for="'city'+address.id" class="block text-sm font-medium text-gray-700">
+                                            {{ 'customer.addresses.city' | t }}
+                                        </label>
+                                        <input type="text"
+                                            name="address[city]"
+                                            :value="address.city"
+                                            :id="'city'+address.id"
+                                            required
+                                            autocapitalize="words"
+                                            class="mt-2 focus:ring-indigo-500 p-2 focus:border-indigo-500 block w-full border sm:text-sm border-gray-300">
+                                    </div>
+
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label :for="'country'+address.id" class="block text-sm font-medium text-gray-700">
+                                            {{ 'customer.addresses.country' | t }}
+                                        </label>
+                                        <select x-ref="address_country"
+                                            @change="province = JSON.parse($event.target.selectedOptions[0].dataset.provinces); address.country = $event.target.selectedOptions[0].text;"
+                                            name="address[country]"
+                                            :value="address.country"
+                                            :id="'country'+address.id"
+                                            required
+                                            class="mt-2 block w-full py-2 px-3 border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                            {{ country_option_tags }}
+                                        </select>
+
+                                    </div>
+
+                                    <div class="col-span-6 sm:col-span-3" x-show="province.length > 0">
+                                        <label :for="'province'+address.id" class="block text-sm font-medium text-gray-700">
+                                            {{ 'customer.addresses.province' | t }}
+                                        </label>
+                                        <select 
+                                            name="address[province]"
+                                            :value="address.province"
+                                            :id="'province'+address.id"
+                                            autocapitalize="words"
+                                            class="mt-2 focus:ring-indigo-500 p-2 focus:border-indigo-500 block w-full border sm:text-sm border-gray-300">
+                                            <template x-for="item in province">
+                                                <option :value="item[0]" x-text="item[0]"></option>
+                                            </template>
+                                        </select>
+                                        
+                                    </div>
+
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label :for="'zip'+address.id" class="block text-sm font-medium text-gray-700">
+                                            {{ 'customer.addresses.zip' | t }}
+                                        </label>
+                                        <input type="text"
+                                            name="address[zip]"
+                                            :value="address.zip"
+                                            :id="'zip'+address.id"
+                                            required
+                                            autocapitalize="words"
+                                            class="mt-2 focus:ring-indigo-500 p-2 focus:border-indigo-500 block w-full border sm:text-sm border-gray-300">
+                                    </div>
+                            
+                                </div>
+                    
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 px-4 py-3 flex flex-col md:flex-row-reverse justify-between">
+
+                        <div class="flex flex-col md:flex-row">
+
+                            <div class="flex items-center my-2 md:my-0">
+                                <input type="checkbox" 
+                                        name="address[default]"
+                                        :checked="address.default"
+                                        :id="'address_default_address_update'+address.id"
+                                        class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+
+                                <label :for="'address_default_address_update'+address.id" class="block text-sm font-medium text-gray-700 mr-3 ml-2">
+                                {{ 'customer.addresses.set_default' | t }}
+                                </label>
+                            </div>
+
+                            <button class="button__primary rounded-sm">
+                                {{ 'customer.addresses.update' | t }}
+                            </button>
+
+                        </div>
+                        <button type="button" @click="openEdit = false;" class="button__secondary text-sm rounded-sm">
+                            {{ 'customer.addresses.cancel' | t }}
+                        </button>
+
+                        <input type="hidden" name="_method" value="put">
+
+                    </div>
+
+                </form>
+
+
+            </div>
+        </div>
+</div>

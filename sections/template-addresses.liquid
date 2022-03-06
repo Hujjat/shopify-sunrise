@@ -1,0 +1,113 @@
+
+<div class="{%if section.settings.full_width %} page-width {%endif%}">
+    <div class="min-h-screen" x-data="{ title: null}">
+        <h1 class="text-2xl md:text-3xl py-7">{{ 'customer.addresses.title' | t }}</h1>
+        <div>
+            <div class="md:grid md:grid-cols-4 md:gap-6">
+                <div class="md:col-span-1">
+                    <div>
+                        {% render 'account-nav' %}
+                    </div>
+
+                    <div class="text-sm px-4">
+
+                        <div class="py-2">
+                            <h2 class="text-base pb-2 font-semibold">{{ customer.name }}</h2>
+                            {{ customer.email }}
+                        </div>
+                        <div class="py-2">
+                            <h2 class="text-base pb-2 font-semibold">{{ 'customer.account.default_address' | t }}</h2>
+                            {{ customer.default_address | format_address }}
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="mt-5 md:mt-0 md:col-span-3"
+                    x-init="province = JSON.parse($refs.address_country.selectedOptions[0].dataset.provinces);"
+                    x-data="{ openDelete: false, openNew: false, deleteId: null, province: [] ,openEdit: false, address: {{ customer.addresses[1] | json | escape }} }">
+                    <div class="sm:overflow-hidden">
+                        <div class="">
+                            <h3 class="text-2xl font-bold px-3 pb-2">{{ 'customer.account.view_addresses' | t }}</h3>
+                            <div class="mt-3 overflow-hidden overflow-x-auto font-medium">
+                                {% paginate customer.addresses by 10 %}
+                                    {% if customer.addresses != 0 %}
+                                        <table class="min-w-full divide-y divide-gray-200 border">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left px-3 py-2">{{ 'customer.addresses.name' | t }}</th>
+                                                    <th class="text-left px-3 py-2">{{ 'customer.addresses.action' | t }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for address in customer.addresses %}
+                                                <tr class="border-b border-gray-300">
+                                                    <td class="px-3 py-2">
+                                                        <div class="flex items-center">
+                                                            {{ address | format_address | replace: '<br>', ' ' }}
+                                                            {% if address == customer.default_address %}
+                                                                <i class="rounded-full bg-green-600 text-white px-3 py-1 ml-3 text-xs font-medium">{{ 'customer.addresses.default' | t }}</i>
+                                                            {% endif %}
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    <td class="px-3 py-2 text-center">
+                                                        <div class="flex items-center">
+
+                                                            <button @click="openEdit = true; address = {{ address | json | escape }}" class="px-2 py-1">
+                                                                {{ 'customer.addresses.edit' | t }}
+                                                            </button>
+
+                                                            <button @click="openDelete = true; deleteId = {{ address.id }}" class="px-2 py-1">
+                                                                {{ 'customer.addresses.delete' | t }}
+                                                            </button>
+
+                                                        </div>
+                                                    </td>
+                                                    
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% else %}
+                                        <p>{{ 'customer.orders.none' | t }}</p>
+                                    {% endif %}
+                                    
+                                    {% if paginate.pages > 1 %}
+                                        <div class="pagination">
+                                            {% render 'pagination' %}
+                                        </div>
+                                    {% endif %}
+                                
+                                {% endpaginate %}
+                            </div>
+                        </div>                    
+
+                        {% render '_new-customer-address' %}
+                        {% render '_edit-customer-address' %}
+                        {% render '_delete-customer-address' %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Addresses page",
+    "settings": [
+      {
+        "type": "header",
+        "content": "General Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Full width",
+        "default": true
+      }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,42 @@
+<div class="fixed z-10 inset-0 overflow-y-auto" 
+    x-cloak x-show="openDelete" 
+        x-transition.opacity
+        aria-modal="true" 
+        aria-labelledby="modal-headline">
+
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+
+            
+            <div class="absolute inset-0 bg-[#0000004f]" x-show="openDelete" @click="openDelete = false; deleteId = null"></div>
+    
+            <div class="inline-block align-bottom bg-white text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="{{ 'customer.addresses.add_new' | t }}">
+                <div class="flex py-5 px-4">
+             
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
+                            {{ 'customer.addresses.delete_title' | t }}
+                        </h3>
+                        <div class="mt-2 text-base">
+                            <p class="font-medium">
+                                {{ 'customer.addresses.delete_confirm' | t }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 flex justify-end">
+                    <button type="button" @click="openDelete = false; deleteId = null" class="button__secondary rounded-sm">
+                        {{ 'customer.addresses.cancel' | t }}
+                    </button>
+                    
+                    <form data-address-delete-form method="post" :action="'/account/addresses/'+deleteId" data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <button type="submit" class="button__primary rounded-sm !bg-red-600 !border-red-600 ml-3">
+                            {{ 'customer.addresses.delete' | t }}
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+</div>
