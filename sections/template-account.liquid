@@ -36,8 +36,6 @@
                                         <th class="text-left px-3 py-2">{{ 'customer.orders.payment_status' | t }}</th>
                                         <th class="text-left px-3 py-2">{{ 'customer.orders.fulfillment_status' | t }}</th>
                                         <th class="text-left px-3 py-2">{{ 'customer.orders.total' | t }}</th>
-                                        <th class="no-print">Cancel/Edit</th>
-                                        <th class="no-print">Reorder</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -47,12 +45,10 @@
                                                 <a href="{{ order.customer_url }}">
                                                     <div class="flex -space-x-2 overflow-hidden">
                                                         {% for order_line in order.line_items limit: 3 %}
-                                                        
-                                                            {% render '_image-card' img: order_line.image , class: 'inline-block w-6 h-6 md:h-8 md:w-8 rounded-full border object-cover' %}
-
+                                                            {{ order_line.image | image_url: width: 200 | image_tag: loading: 'lazy', class: 'inline-block w-6 h-6 md:h-8 md:w-8 rounded-full border object-cover' }}
                                                         {% endfor %}
                                                     </div>
-                                                    <span class="my-1 block text-center">
+                                                    <span class="my-1 block">
                                                         {{ order.name }}
                                                     </span>
                                                 </a>
@@ -61,13 +57,7 @@
                                             <td class="px-3 py-2 whitespace-nowrap" data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
                                             <td class="px-3 py-2 whitespace-nowrap" data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
                                             <td class="px-3 py-2 whitespace-nowrap" data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
-                                            <td class="px-3 py-2 whitespace-nowrap text-sm no-print">
-                                                <a target="_blank" href="https://shopify-order-edit.herokuapp.com/order-editor/kitschllc.myshopify.com/{{ order.id }}">Cancel / Edit</a>
-                                            </td>
-                            
-                                            <td class="px-3 py-2 whitespace-nowrap text-sm no-print">
-                                                <a target="_blank" href="https://shopify-order-edit.herokuapp.com/order-editor/reorder/kitschllc.myshopify.com/{{ order.id }}">Reorder</a>
-                                            </td>
+                                           
                                         </tr>
                                     {% endfor %}
                                     </tbody>
