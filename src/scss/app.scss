@@ -59,3 +59,11 @@ $btn-height: 44px;
     @apply bg-black text-white my-2 px-6 rounded-sm flex items-center;
     min-height: $btn-height;
 }
+
+// product form
+.product-form__input{
+    // select label after checked radio input 
+    input[type='radio']:checked + label{
+        @apply bg-black text-white;
+    }
+}
