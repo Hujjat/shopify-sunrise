@@ -92,12 +92,16 @@
                 x-data="{ 
                     qty: 1,
                     minus(value) {
+                      this.qty = parseInt(this.qty);
                       (this.qty == 1) ? this.qty = 1 : this.qty -= value;
                     },
                     plus(value) {
+                      this.qty = parseInt(this.qty);
                       this.qty += value;
                     }
-                  }">
+                  }"
+                  x-init="$watch('qty', value =>  $dispatch('quantity-changed', { quantity: value }))"
+                  >
 
                 <button type="button" class=" min-h-[44px] w-full flex items-center justify-center cursor-pointer" @click="minus(1)">
                   <span class="sr-only">{{ 'products.product.quantity.decrease' | t: product: product.title | escape }}</span>
@@ -256,10 +260,13 @@
                     });
 
                 }
-              }">
+              }"
+              @quantity-changed.window="qty = $event.detail.quantity"
+              >
              
                 {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', x-ref: 'product_form' -%}
                   <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  <input type="hidden" name="quantity" x-model="qty" value="1">
                   <div class="product-form__buttons">
                     <button
                       type="button"
