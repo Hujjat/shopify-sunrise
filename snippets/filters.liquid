@@ -1,0 +1,94 @@
+<div class="fitlers mr-8">
+    <h4 class="filters__title font-semibold pb-4 border-b">{{ 'products.facets.filter_by_label' | t }}</h4>
+
+    <form class="filter-form divide-y">
+        {%- for filter in collection.filters -%}
+          <details class="filter-group">
+            <summary class="filter-group-summary flex justify-between py-2 cursor-pointer">
+              <div>
+                <span class="font-semibold">{{ filter.label }}</span>
+      
+                {%- if filter.active_values.size > 0 -%}
+                  <span>({{ filter.active_values.size }})</span>
+                {%- endif -%}
+              </div>
+              <span class="arrow-icon">
+                  {% render 'icon-arrow-right' %}
+              </span>
+            </summary>
+      
+            <div class="filter-group-display">
+              <div class="filter-group-display__header">
+                <span class="filter-group-display__header-selected">{{ filter.active_values.size }} selected</span>
+      
+                {%- if filter.active_values.size > 0 -%}
+                  <a href="{{ filter.url_to_remove }}" class="filter-group-display__header-reset">Reset</a>
+                {%- endif -%}
+              </div>
+      
+              {%- case filter.type -%}
+                {%- when 'boolean' or 'list' -%}
+                  <ul class="filter-group-display__list">
+                    {%- for filter_value in filter.values -%}
+                      <li class="filter-group-display__list-item">
+                        <label for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
+                        <input type="checkbox"
+                          name="{{ filter_value.param_name }}"
+                          value="{{ filter_value.value }}"
+                          id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
+                          {% if filter_value.active -%}checked{%- endif %}
+                          {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
+                        >{{ filter_value.label }} {{ filter_value.count }} </label>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+      
+                  <div class="filter-group-display__submit">
+                    <input type="submit" value="Apply">
+                  </div>
+                {%- when 'price_range' -%}
+                  <div class="filter-group-display__price-range">
+                    <div class="filter-group-display__price-range-from">
+                      <span>{{ cart.currency.symbol }}</span>
+      
+                      <input name="{{ filter.min_value.param_name }}"
+                        id="Filter-{{ filter.min_value.param_name }}"
+                        {% if filter.min_value.value -%}
+                          value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                        {%- endif %}
+                        type="number"
+                        placeholder="0"
+                        min="0"
+                        max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                      >
+      
+                      <label for="Filter-{{ filter.min_value.param_name }}">From</label>
+                    </div>
+                    <div class="filter-group-display__price-range-to">
+                      <span>{{ cart.currency.symbol }}</span>
+      
+                      <input name="{{ filter.max_value.param_name }}"
+                        id="Filter-{{ filter.max_value.param_name }}"
+                        {% if filter.max_value.value -%}
+                          value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                        {%- endif %}
+                        type="number"
+                        placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                        min="0"
+                        max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                      >
+      
+                      <label for="Filter-{{ filter.max_value.param_name }}">To</label>
+                    </div>
+                  </div>
+      
+                  <div class="filter-group-display__submit">
+                    <button type="submit"> {{ 'products.facets.apply' | t }} </button>
+                  </div>
+              {%- endcase -%}
+            </div>
+          </details>
+        {%- endfor -%}  
+    </form>
+      
+</div>

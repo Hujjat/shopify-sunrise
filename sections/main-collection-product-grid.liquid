@@ -3,78 +3,126 @@
 <div class="section-{{ section.id }}-padding">
   
   {% if section.settings.enable_sorting %}
-    {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
-    <div class="collection__sort page-width flex justify-end" 
-      x-data="{
-        loading: false,
-        sort: '{{ sort_by }}',
-        sortCollection(){
-          this.loading = true;
-          fetch('/collections/{{ collection.handle }}?sort_by=' + this.sort)
-            .then(response => response.text())
-            .then(data => {
-              let html_div = document.createElement('div');
-              html_div.innerHTML = data;
 
-              let html_dom = html_div.querySelector('#ProductGridContainer').innerHTML;
-              document.querySelector('#ProductGridContainer').innerHTML = html_dom;
-              // update url without refreshing the page 
-              history.replaceState(null, null, '?sort_by=' + this.sort);
-            })
-            .catch(error => console.error('Error:', error))
-            .finally(() => this.loading = false);
-        }
-      }">
-      
-      {% render 'loader' %}
+    <div class="flex justify-between page-width">
 
-      <select id="sort-by" x-model="sort" @change="sortCollection()" class="py-3 px-4 my-3 border border-black">
-        {% for option in collection.sort_options %}
-          <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
-            {{ option.name }}
-          </option>
+      {% assign hasFilter = false %}
+      {%- for filter in collection.filters -%}
+        {%- for filter_value in filter.active_values -%}
+            {% assign hasFilter = true %}
         {% endfor %}
-      </select>
-      
+      {% endfor %}
+
+      <div class="active-filters flex space-x-3 items-center">
+          {% if hasFilter %}
+            <a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="active-filters__clear flex items-center border text-white text-sm py-1 px-3 bg-[#757575] rounded-full">
+              Clear all
+              <span>{% render 'icon-close', class: 'ml-2 w-5' %}</span>
+            </a>
+          {% endif %}
+
+          {%- for filter in collection.filters -%}
+            {%- if filter.type == "price_range" -%}
+              {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+                <a class="active-filters__remove-filter flex items-center border text-sm py-1 px-3 bg-[#d6d6d6] rounded-full" href="{{ filter.url_to_remove }}">
+                  {%- assign min_value = filter.min_value.value | default: 0 -%}
+                  {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
+                  {{ min_value | money }} - {{ max_value | money }} <span>{% render 'icon-close', class: 'ml-2 w-5' %}</span>
+                </a>
+              {%- endif -%}
+            {%- else -%}
+              {%- for filter_value in filter.active_values -%}
+                <a class="active-filters__remove-filter flex items-center border text-sm py-1 px-3 bg-[#d6d6d6] rounded-full" href="{{ filter_value.url_to_remove }}">
+                  {{ filter_value.label }} <span>{% render 'icon-close', class: 'ml-2 w-5' %}</span>
+                </a>
+              {%- endfor -%}
+            {%- endif- %}
+          {%- endfor -%}
+        </div>
+
+
+      {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+      <div class="collection__sort flex justify-end" 
+        x-data="{
+          loading: false,
+          sort: '{{ sort_by }}',
+          sortCollection(){
+            this.loading = true;
+            fetch('/collections/{{ collection.handle }}?sort_by=' + this.sort)
+              .then(response => response.text())
+              .then(data => {
+                let html_div = document.createElement('div');
+                html_div.innerHTML = data;
+  
+                let html_dom = html_div.querySelector('#ProductGridContainer').innerHTML;
+                document.querySelector('#ProductGridContainer').innerHTML = html_dom;
+                // update url without refreshing the page 
+                history.replaceState(null, null, '?sort_by=' + this.sort);
+              })
+              .catch(error => console.error('Error:', error))
+              .finally(() => this.loading = false);
+          }
+        }">
+        
+        {% render 'loader' %}
+  
+        <select id="sort-by" x-model="sort" @change="sortCollection()" class="py-3 px-4 my-3 border border-black">
+          {% for option in collection.sort_options %}
+            <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
+              {{ option.name }}
+            </option>
+          {% endfor %}
+        </select>
+        
+      </div>
     </div>
   {% endif %}
 
-  <div id="ProductGridContainer">
-    {%- paginate collection.products by section.settings.products_per_page -%}
-      {%- if collection.products.size == 0 -%}
-        <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
-          <div class="loading-overlay gradient"></div>
-          <div class="title-wrapper center">
-            <h2 class="title title--primary">
-              {{ 'sections.collection_template.empty' | t }}<br>
-              {{ 'sections.collection_template.use_fewer_filters_html' | t: link: collection.url, class: "underlined-link link" }}
-            </h2>
-          </div>
-        </div>
-      {%- else -%}
-        <div class="collection page-width">
-  
-          <ul id="product-grid" data-id="{{ section.id }}" class="grid grid-cols-4 gap-2">
-            {%- for product in collection.products -%}
+  <div class="flex page-width">
+    {% if section.settings.enable_filtering %}
+      <div class="w-3/12">
+        {% render 'filters', results: collection, enable_sorting: section.settings.enable_filtering %}
+      </div>
+    {% endif %}
 
-              <li class="grid__item">
-                {% render 'card-product',
-                  card_product: product,
-                  media_aspect_ratio: section.settings.image_ratio,
-                  show_secondary_image: section.settings.show_secondary_image,
-                  show_vendor: section.settings.show_vendor,
-                  show_rating: section.settings.show_rating
-                %}
-              </li>
-            {%- endfor -%}
-          </ul>
+    <div class="{% if section.settings.enable_filtering %} w-9/12 {% endif %}" id="ProductGridContainer">
+      {%- paginate collection.products by section.settings.products_per_page -%}
+        {%- if collection.products.size == 0 -%}
+          <div class="collection collection--empty" id="product-grid" data-id="{{ section.id }}">
+            <div class="loading-overlay gradient"></div>
+            <div class="title-wrapper center">
+              <h2 class="title title--primary">
+                {{ 'sections.collection_template.empty' | t }}<br>
+                {{ 'sections.collection_template.use_fewer_filters_html' | t: link: collection.url, class: "underlined-link link" }}
+              </h2>
+            </div>
+          </div>
+        {%- else -%}
+          <div class="collection">
+    
+            <ul id="product-grid" data-id="{{ section.id }}" class="grid grid-cols-4 gap-2">
+              {%- for product in collection.products -%}
   
-          {%- if paginate.pages > 1 -%}
-            {% render 'pagination', paginate: paginate, anchor: '' %}
-          {%- endif -%}
-        </div>
-      {%- endif -%}
-    {%- endpaginate -%}
+                <li class="grid__item">
+                  {% render 'card-product',
+                    card_product: product,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating
+                  %}
+                </li>
+              {%- endfor -%}
+            </ul>
+    
+            {%- if paginate.pages > 1 -%}
+              {% render 'pagination', paginate: paginate, anchor: '' %}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+
   </div>
 
 </div>

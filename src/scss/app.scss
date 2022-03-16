@@ -67,3 +67,16 @@ $btn-height: 44px;
         @apply bg-black text-white;
     }
 }
+
+// Collection filter
+.filter-form{
+    .filter-group{
+        &[open]{
+            .arrow-icon{
+                svg{
+                    transform: rotate(90deg);
+                }
+            }
+        }
+    }
+}

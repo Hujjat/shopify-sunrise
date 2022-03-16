@@ -576,6 +576,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .mt-2 {
   margin-top: 0.5rem;
 }
+.ml-2 {
+  margin-left: 0.5rem;
+}
 .mt-6 {
   margin-top: 1.5rem;
 }
@@ -591,14 +594,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 .mr-3 {
   margin-right: 0.75rem;
 }
-.ml-2 {
-  margin-left: 0.5rem;
-}
 .-ml-8 {
   margin-left: -2rem;
 }
 .mr-1 {
   margin-right: 0.25rem;
+}
+.mr-8 {
+  margin-right: 2rem;
 }
 .-ml-1 {
   margin-left: -0.25rem;
@@ -681,6 +684,15 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-10 {
   width: 2.5rem;
 }
+.w-5 {
+  width: 1.25rem;
+}
+.w-3\/12 {
+  width: 25%;
+}
+.w-9\/12 {
+  width: 75%;
+}
 .w-full {
   width: 100%;
 }
@@ -705,14 +717,8 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-5\/6 {
   width: 83.333333%;
 }
-.w-3\/12 {
-  width: 25%;
-}
 .w-6\/12 {
   width: 50%;
-}
-.w-5 {
-  width: 1.25rem;
 }
 .w-3 {
   width: 0.75rem;
@@ -859,6 +865,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: calc(1.25rem * var(--tw-space-x-reverse));
   margin-left: calc(1.25rem * calc(1 - var(--tw-space-x-reverse)));
 }
+.space-x-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
+}
 .-space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(-0.5rem * var(--tw-space-x-reverse));
@@ -981,6 +992,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
+.bg-\[\#757575\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(117 117 117 / var(--tw-bg-opacity));
+}
+.bg-\[\#d6d6d6\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(214 214 214 / var(--tw-bg-opacity));
+}
 .bg-green-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(22 163 74 / var(--tw-bg-opacity));
@@ -1050,13 +1069,13 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
-.py-7 {
-  padding-top: 1.75rem;
-  padding-bottom: 1.75rem;
-}
 .px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
+}
+.py-7 {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
 }
 .px-2 {
   padding-left: 0.5rem;
@@ -1341,6 +1360,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.filter-form .filter-group[open] .arrow-icon svg {
+  transform: rotate(90deg);
 }
 
 .hover\:text-white:hover {
