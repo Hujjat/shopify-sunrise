@@ -2,10 +2,12 @@
 
 <div class="section-{{ section.id }}-padding">
   
-  {% if section.settings.enable_sorting %}
-
+  {% if section.settings.enable_sorting or section.settings.enable_filtering %}
     <div class="flex justify-between page-width">
 
+      {%- comment -%}
+        Find if there is any filter applied
+      {%- endcomment -%}
       {% assign hasFilter = false %}
       {%- for filter in collection.filters -%}
         {%- for filter_value in filter.active_values -%}
@@ -38,8 +40,7 @@
               {%- endfor -%}
             {%- endif- %}
           {%- endfor -%}
-        </div>
-
+      </div>
 
       {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
       <div class="collection__sort flex justify-end" 
@@ -75,6 +76,7 @@
         </select>
         
       </div>
+
     </div>
   {% endif %}
 
@@ -99,8 +101,7 @@
           </div>
         {%- else -%}
           <div class="collection">
-    
-            <ul id="product-grid" data-id="{{ section.id }}" class="grid grid-cols-4 gap-2">
+            <ul id="product-grid" data-id="{{ section.id }}" class="grid grid-cols-3 gap-2">
               {%- for product in collection.products -%}
   
                 <li class="grid__item">

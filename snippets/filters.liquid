@@ -1,15 +1,14 @@
 <div class="fitlers mr-8">
     <h4 class="filters__title font-semibold pb-4 border-b">{{ 'products.facets.filter_by_label' | t }}</h4>
-
-    <form class="filter-form divide-y">
+    <form class="filter-form divide-y divide-gray-300">
         {%- for filter in collection.filters -%}
-          <details class="filter-group">
-            <summary class="filter-group-summary flex justify-between py-2 cursor-pointer">
+          <details class="filter-group" open>
+            <summary class="filter-group-summary flex justify-between py-3 cursor-pointer">
               <div>
                 <span class="font-semibold">{{ filter.label }}</span>
       
                 {%- if filter.active_values.size > 0 -%}
-                  <span>({{ filter.active_values.size }})</span>
+                  <span class="text-sm ml-2">({{ filter.active_values.size }})</span>
                 {%- endif -%}
               </div>
               <span class="arrow-icon">
@@ -17,12 +16,11 @@
               </span>
             </summary>
       
-            <div class="filter-group-display">
-              <div class="filter-group-display__header">
-                <span class="filter-group-display__header-selected">{{ filter.active_values.size }} selected</span>
-      
+            <div class="filter-group-display pb-3">
+              <div class="filter-group-display__header flex justify-between items-center">
                 {%- if filter.active_values.size > 0 -%}
-                  <a href="{{ filter.url_to_remove }}" class="filter-group-display__header-reset">Reset</a>
+                  <span class="filter-group-display__header-selected text-sm">{{ filter.active_values.size }} selected</span>
+                  <a href="{{ filter.url_to_remove }}" class="reset-btn bg-gray-200 py-1 px-3 text-sm rounded-sm">Reset</a>
                 {%- endif -%}
               </div>
       
@@ -30,29 +28,39 @@
                 {%- when 'boolean' or 'list' -%}
                   <ul class="filter-group-display__list">
                     {%- for filter_value in filter.values -%}
-                      <li class="filter-group-display__list-item">
-                        <label for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
+                      <li class="filter-group-display__list-item py-2">
+                        <label class="flex items-center" for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
                         <input type="checkbox"
+                          class="mr-2 accent-black"
                           name="{{ filter_value.param_name }}"
                           value="{{ filter_value.value }}"
                           id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
                           {% if filter_value.active -%}checked{%- endif %}
                           {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
-                        >{{ filter_value.label }} {{ filter_value.count }} </label>
+                        >
+                        <div class="flex justify-between w-full text-sm">
+                          <span class="{% if filter_value.active -%} font-semibold {%- endif %}">{{ filter_value.label }} </span>
+                          <span>{{ filter_value.count }}</span>
+                        </div>
+                      </label>
                       </li>
                     {%- endfor -%}
                   </ul>
       
-                  <div class="filter-group-display__submit">
-                    <input type="submit" value="Apply">
+                  <div class="filter-group-display__submit my-2 flex justify-end">
+                    <button type="submit" class="bg-black text-white py-1 px-3 text-sm rounded-sm">
+                      Apply
+                    </button>
                   </div>
                 {%- when 'price_range' -%}
-                  <div class="filter-group-display__price-range">
+                  <div class="filter-group-display__price-range my-2 flex justify-between space-x-3">
                     <div class="filter-group-display__price-range-from">
+
+                      <label for="Filter-{{ filter.min_value.param_name }}" class="block">From</label>
                       <span>{{ cart.currency.symbol }}</span>
-      
                       <input name="{{ filter.min_value.param_name }}"
                         id="Filter-{{ filter.min_value.param_name }}"
+                        class="border border-gray-400 rounded-sm p-1"
                         {% if filter.min_value.value -%}
                           value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
                         {%- endif %}
@@ -62,13 +70,14 @@
                         max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
                       >
       
-                      <label for="Filter-{{ filter.min_value.param_name }}">From</label>
                     </div>
                     <div class="filter-group-display__price-range-to">
+                      <label for="Filter-{{ filter.max_value.param_name }}" class="block">To</label>
+
                       <span>{{ cart.currency.symbol }}</span>
-      
                       <input name="{{ filter.max_value.param_name }}"
                         id="Filter-{{ filter.max_value.param_name }}"
+                        class="border border-gray-400 rounded-sm p-1"
                         {% if filter.max_value.value -%}
                           value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
                         {%- endif %}
@@ -78,12 +87,11 @@
                         max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
                       >
       
-                      <label for="Filter-{{ filter.max_value.param_name }}">To</label>
                     </div>
                   </div>
       
-                  <div class="filter-group-display__submit">
-                    <button type="submit"> {{ 'products.facets.apply' | t }} </button>
+                  <div class="filter-group-display__submit flex justify-end">
+                    <button type="submit" class="bg-black text-white py-1 px-3 text-sm rounded-sm"> {{ 'products.facets.apply' | t }} </button>
                   </div>
               {%- endcase -%}
             </div>
