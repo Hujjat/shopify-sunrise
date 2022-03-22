@@ -1,6 +1,31 @@
-<div class="fitlers mr-8">
+<div class="fitlers mr-8" 
+  x-data="{
+    loading: false,
+  }"
+  @filter-updated.window="$nextTick(() => {
+    const queryString = new URLSearchParams(new FormData($refs.filter_form)).toString()
+    
+    loading = true;
+    fetch('/collections/{{ collection.handle }}?' + queryString)
+      .then(response => response.text())
+      .then(data => {
+        let html_div = document.createElement('div');
+        html_div.innerHTML = data;
+        let html_dom = html_div.querySelector('#ProductGridContainer').innerHTML;
+        document.querySelector('#ProductGridContainer').innerHTML = html_dom;
+        // update url without refreshing the page 
+        history.replaceState(null, null, '?' + queryString);
+      })
+      .catch(error => console.error('Error:', error))
+      .finally(() => loading = false);
+    
+  })"
+  >
     <h4 class="filters__title font-semibold pb-4 border-b">{{ 'products.facets.filter_by_label' | t }}</h4>
-    <form class="filter-form divide-y divide-gray-300">
+
+    {% render 'loader' %}
+
+    <form class="filter-form divide-y divide-gray-300" x-ref="filter_form">
         {%- for filter in collection.filters -%}
           <details class="filter-group" open>
             <summary class="filter-group-summary flex justify-between py-3 cursor-pointer">
@@ -32,6 +57,7 @@
                         <label class="flex items-center" for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
                         <input type="checkbox"
                           class="mr-2 accent-black"
+                          @change="$dispatch('filter-updated')"
                           name="{{ filter_value.param_name }}"
                           value="{{ filter_value.value }}"
                           id="Filter-{{ filter.param_name }}-{{ forloop.index }}"

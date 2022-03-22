@@ -1,6 +1,6 @@
 
 
-<div class="section-{{ section.id }}-padding">
+<div class="section-{{ section.id }}-padding" id="ProductGridContainer">
   
   {% if section.settings.enable_sorting or section.settings.enable_filtering %}
     <div class="flex justify-between page-width">
@@ -87,7 +87,7 @@
       </div>
     {% endif %}
 
-    <div class="{% if section.settings.enable_filtering %} w-9/12 {% endif %}" id="ProductGridContainer">
+    <div class="{% if section.settings.enable_filtering %} w-9/12 {% endif %}">
       {%- paginate collection.products by section.settings.products_per_page -%}
         {%- if collection.products.size == 0 -%}
           <div class="collection collection--empty" id="product-grid" data-id="{{ section.id }}">
