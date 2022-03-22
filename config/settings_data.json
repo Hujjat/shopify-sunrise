@@ -1,5 +1,7 @@
 {
   "current": {
+    "type_header_font": "avenir_next_n6",
+    "type_body_font": "avenir_next_n4",
     "sections": {
       "announcement-bar": {
         "type": "announcement-bar",
@@ -82,18 +84,14 @@
       },
       "main-password-header": {
         "type": "main-password-header",
-        "settings": {
-        }
+        "settings": {}
       },
       "main-password-footer": {
         "type": "main-password-footer",
-        "settings": {
-        }
+        "settings": {}
       }
     },
-    "content_for_index": [
-
-    ]
+    "content_for_index": []
   },
   "presets": {
     "Default": {
@@ -103,15 +101,13 @@
           "blocks": {
             "announcement-bar-0": {
               "type": "announcement",
-              "settings": {
-              }
+              "settings": {}
             }
           },
           "block_order": [
             "announcement-bar-0"
           ],
-          "settings": {
-          }
+          "settings": {}
         },
         "header": {
           "type": "header",
@@ -124,8 +120,7 @@
           "blocks": {
             "footer-0": {
               "type": "link_list",
-              "settings": {
-              }
+              "settings": {}
             },
             "footer-1": {
               "type": "link_list",
@@ -145,18 +140,15 @@
             "footer-1",
             "footer-2"
           ],
-          "settings": {
-          }
+          "settings": {}
         },
         "main-password-header": {
           "type": "main-password-header",
-          "settings": {
-          }
+          "settings": {}
         },
         "main-password-footer": {
           "type": "main-password-footer",
-          "settings": {
-          }
+          "settings": {}
         }
       }
     }
