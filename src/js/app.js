@@ -1,8 +1,10 @@
 import Alpine from 'alpinejs'
 import persist from '@alpinejs/persist'
+import Slider from './Slider.js'
 
 window.Alpine = Alpine
 Alpine.plugin(persist)
+Alpine.data('Slider', Slider)
 
 Alpine.start()
 

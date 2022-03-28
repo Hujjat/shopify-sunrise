@@ -3468,6 +3468,55 @@ var module_default = src_default;
 
 /***/ }),
 
+/***/ "./src/js/Slider.js":
+/*!**************************!*\
+  !*** ./src/js/Slider.js ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
+  return {
+    skip: 1,
+    next: function next() {
+      var _this = this;
+
+      this.to(function (current, offset) {
+        return current + offset * _this.skip;
+      });
+    },
+    prev: function prev() {
+      var _this2 = this;
+
+      this.to(function (current, offset) {
+        return current - offset * _this2.skip;
+      });
+    },
+    to: function to(strategy) {
+      var slider = this.$refs.slider;
+      var current = slider.scrollLeft;
+      var offset = slider.firstElementChild.getBoundingClientRect().width;
+      slider.scrollTo({
+        left: strategy(current, offset),
+        behavior: 'smooth'
+      });
+    },
+    focusableWhenVisible: {
+      'x-intersect:enter': function xIntersectEnter() {
+        this.$el.removeAttribute('tabindex');
+      },
+      'x-intersect:leave': function xIntersectLeave() {
+        this.$el.setAttribute('tabindex', '-1');
+      }
+    }
+  };
+});
+
+/***/ }),
+
 /***/ "./src/js/app.js":
 /*!***********************!*\
   !*** ./src/js/app.js ***!
@@ -3477,10 +3526,13 @@ var module_default = src_default;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var alpinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/module.esm.js");
 /* harmony import */ var _alpinejs_persist__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @alpinejs/persist */ "./node_modules/@alpinejs/persist/dist/module.esm.js");
+/* harmony import */ var _Slider_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Slider.js */ "./src/js/Slider.js");
+
 
 
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"];
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].plugin(_alpinejs_persist__WEBPACK_IMPORTED_MODULE_1__["default"]);
+alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].data('Slider', _Slider_js__WEBPACK_IMPORTED_MODULE_2__["default"]);
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].start();
 var Sunrise = {
   updateQuantity: function updateQuantity(line, qty) {
