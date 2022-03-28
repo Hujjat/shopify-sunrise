@@ -9,14 +9,14 @@
 {%- endif -%}
 
 <section class="page-width">
-  <div class="product grid grid-cols-3 gap-6 mt-6">
+  <div class="product grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
 
-    <div class="product__media-wrapper col-span-2 grid grid-cols-2 gap-3">
+    <div class="product__media-wrapper md:col-span-2 flex overflow-x-scroll md:grid grid-cols-2 gap-3">
       {% for media in product.media %}
           {% if forloop.first %}
-            {% render 'media', media: media, class: 'col-span-2' %}
+            {% render 'media', media: media, class: 'w-full flex-shrink-0 col-span-2' %}
           {% else %}
-            {% render 'media', media: media %}
+            {% render 'media', media: media, class: 'w-full flex-shrink-0' %}
           {% endif %}
       {% endfor %}
     </div>
