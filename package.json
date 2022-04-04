@@ -1,0 +1,31 @@
+{
+  "name": "shopify-sunrise",
+  "version": "1.0.0",
+  "description": "Open-sourced Shopify Store 2.0 Starter theme with Tailwind CSS and Alpinejs. This repo is based on YouTube Course for Shopify Theme development for Store 2.0.",
+  "main": "tailwind.config.js",
+  "dependencies": {
+    "alpinejs": "^3.8.1",
+    "laravel-mix": "^6.0.41",
+    "prettier": "^2.5.1",
+    "prettier-plugin-tailwindcss": "^0.1.5",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.49.7",
+    "sass-loader": "^12.4.0",
+    "tailwindcss": "^3.0.18"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hujjat/shopify-sunrise.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hujjat/shopify-sunrise/issues"
+  },
+  "homepage": "https://github.com/Hujjat/shopify-sunrise#readme"
+}
