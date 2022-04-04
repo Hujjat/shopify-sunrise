@@ -1,19 +1,19 @@
 export default () => ({
     skip: 1,
+    slider: null,
     active: 1,
     total: null,
     interval: 3000,
     autoplay: false,
     direction: 'right',
     init() {
+
         this.$nextTick(() => {
-           this.total = this.$refs.slider.children.length;
+            this.total = this.$refs.slider.children.length;
         });
 
         if(this.autoplay) {
-            setTimeout(() => {
-                this.play();
-            }, 100);
+            this.play();
         }
     },
     next() {
@@ -54,7 +54,6 @@ export default () => ({
             }
 
         }, this.interval);
-
 
     },
     focusableWhenVisible: {

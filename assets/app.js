@@ -3481,6 +3481,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
   return {
     skip: 1,
+    slider: null,
     active: 1,
     total: null,
     interval: 3000,
@@ -3494,9 +3495,7 @@ __webpack_require__.r(__webpack_exports__);
       });
 
       if (this.autoplay) {
-        setTimeout(function () {
-          _this.play();
-        }, 100);
+        this.play();
       }
     },
     next: function next() {
