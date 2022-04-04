@@ -3481,18 +3481,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
   return {
     skip: 1,
-    next: function next() {
+    active: 1,
+    total: null,
+    interval: 3000,
+    autoplay: false,
+    direction: 'right',
+    init: function init() {
       var _this = this;
 
-      this.to(function (current, offset) {
-        return current + offset * _this.skip;
+      this.$nextTick(function () {
+        _this.total = _this.$refs.slider.children.length;
       });
+
+      if (this.autoplay) {
+        setTimeout(function () {
+          _this.play();
+        }, 100);
+      }
     },
-    prev: function prev() {
+    next: function next() {
       var _this2 = this;
 
       this.to(function (current, offset) {
-        return current - offset * _this2.skip;
+        return current + offset * _this2.skip;
+      });
+    },
+    prev: function prev() {
+      var _this3 = this;
+
+      this.to(function (current, offset) {
+        return current - offset * _this3.skip;
       });
     },
     to: function to(strategy) {
@@ -3503,6 +3521,37 @@ __webpack_require__.r(__webpack_exports__);
         left: strategy(current, offset),
         behavior: 'smooth'
       });
+    },
+    play: function play() {
+      var _this4 = this;
+
+      var counter = this.active; // run every this.interval milliseconds
+
+      var interval = setInterval(function () {
+        // check if direction is right and click next
+        if (_this4.direction === 'right') {
+          _this4.next();
+
+          counter++;
+        } // check if direction is left and click prev
+
+
+        if (_this4.direction === 'left') {
+          _this4.prev();
+
+          counter--;
+        } // check if counter is equal to total and change direction to left
+
+
+        if (counter == _this4.total) {
+          _this4.direction = 'left';
+        } // check if counter is equal to 1 and change direction to right
+
+
+        if (counter == _this4.active) {
+          _this4.direction = 'right';
+        }
+      }, this.interval);
     },
     focusableWhenVisible: {
       'x-intersect:enter': function xIntersectEnter() {
