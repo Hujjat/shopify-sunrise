@@ -36,8 +36,8 @@
 
             {% if form.errors %}
               <div class="py-2 contact-form__form-errors">
-                <p class="quote">{{ 'general.forms.post_error' | t }}</p>
-                  {% assign message = 'contact.form.message' | t %}
+                <p class="quote">{{ 'templates.forms.post_error' | t }}</p>
+                  {% assign message = 'templates.contact.form.message' | t %}
                   {% for field in form.errors %}
                     {% if field == 'form' %}
                       <p class="form__error text-red-500">
@@ -46,7 +46,7 @@
                     {% else %}
                       <p class="form__error text-red-500">
                         {% assign field_name = field | replace: 'body', message %}
-                        {{ 'general.forms.post_field_error_html' | t: field: field_name, error: form.errors.messages[field] }}
+                        {{ 'templates.forms.post_field_error_html' | t: field: field_name, error: form.errors.messages[field] }}
                       </p>
                     {% endif %}
                   {% endfor %}
