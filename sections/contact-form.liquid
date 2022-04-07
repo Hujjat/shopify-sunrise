@@ -1,162 +1,661 @@
-{{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+<div class="contact-form py-3">
+  <div class="{{ section.settings.width }}">
+    <div class="md:flex gap-7 {{ section.settings.form_position }}">
 
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
+      <div class="md:w-1/2">
+          {% if section.settings.content_image != blank %}
+            <div class="contact-form__img py-2">
+              {{ section.settings.content_image | image_url: width: 900 | image_tag: loading: 'lazy', class: 'w-full' }}
+            </div>
+          {% endif %}
 
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-{%- endstyle -%}
+          {% if section.settings.title != blank %}
+            <h2 class="contact-form__title text-2xl font-semibold md:text-3xl py-2">
+              {{ section.settings.title }}
+            </h2>
+          {% endif %}
 
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="contact page-width page-width--narrow section-{{ section.id }}-padding">
-    <h2 class="title title-wrapper--no-top-margin">{{ section.settings.heading | escape }}</h2>
-    {%- form 'contact', id: 'ContactForm', class: 'isolate' -%}
-      {%- if form.posted_successfully? -%}
-        <div class="form-status form-status-list form__message" tabindex="-1" autofocus>{% render 'icon-success' %} {{ 'templates.contact.form.post_success' | t }}</div>
-      {%- elsif form.errors -%}
-        <div class="form__message">
-          <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>{% render 'icon-error' %} {{ 'templates.contact.form.error_heading' | t }}</h2>
-        </div>
-        <ul class="form-status-list caption-large" role="list">
-          <li>
-            <a href="#ContactForm-email" class="link">
-              {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
-            </a>
-          </li>
-        </ul>
-      {%- endif -%}
-      <div class="contact__fields">
-        <div class="field">
-          <input class="field__input" autocomplete="name" type="text" id="ContactForm-name" name="contact[{{ 'templates.contact.form.name' | t }}]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="{{ 'templates.contact.form.name' | t }}">
-          <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
-        </div>
-        <div class="field field--with-error">
-          <input
-            autocomplete="email"
-            type="email"
-            id="ContactForm-email"
-            class="field__input"
-            name="contact[email]"
-            spellcheck="false"
-            autocapitalize="off"
-            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-            aria-required="true"
-            {% if form.errors contains 'email' %}
-              aria-invalid="true"
-              aria-describedby="ContactForm-email-error"
+          <!-- content_text -->
+          {% if section.settings.content_text != blank %}
+            <div class="contact-form__text prose py-2">
+              {{ section.settings.content_text }}
+            </div>
+          {% endif %}
+
+
+      </div>
+
+      {% if section.blocks.size > 0 %}
+        <div class="md:w-1/2">
+          {% form 'contact', class: 'contact-form contact-form--contact-section' %}
+            {% if form.posted_successfully? %}
+              <div class="py-2">
+                <p class="quote has-margin-bottom text-green-700">{{ 'templates.contact.form.post_success' | t }}</p>
+              </div>
             {% endif %}
-            placeholder="{{ 'templates.contact.form.email' | t }}"
-          >
-          <label class="field__label" for="ContactForm-email">{{ 'templates.contact.form.email' | t }} <span aria-hidden="true">*</span></label>
-          {%- if form.errors contains 'email' -%}
-            <small class="contact__field-error" id="ContactForm-email-error">
-              <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
-              <span class="form__message">{% render 'icon-error' %}{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</span>
-            </small>
-          {%- endif -%}
+
+            {% if form.errors %}
+              <div class="py-2 contact-form__form-errors">
+                <p class="quote">{{ 'general.forms.post_error' | t }}</p>
+                  {% assign message = 'contact.form.message' | t %}
+                  {% for field in form.errors %}
+                    {% if field == 'form' %}
+                      <p class="form__error text-red-500">
+                        {{ form.errors.messages[field] }}
+                      </p>
+                    {% else %}
+                      <p class="form__error text-red-500">
+                        {% assign field_name = field | replace: 'body', message %}
+                        {{ 'general.forms.post_field_error_html' | t: field: field_name, error: form.errors.messages[field] }}
+                      </p>
+                    {% endif %}
+                  {% endfor %}
+              </div>
+            {% endif %}
+
+            <div class="contact-form__blocks space-y-3">
+                {% for block in section.blocks %}
+                    <div class="contact-form__block contact-form__block--{{ block.type }}" {{ block.shopify_attributes }}>
+
+                      {% if block.type == 'textfield' %}
+                      {% comment %} Text field {% endcomment %}
+                        {% if block.settings.label != blank %}
+                          {% assign label = block.settings.label %}
+                        {% else %}
+                          {% assign label = 'Option ' | append: forloop.index %}
+                        {% endif %}
+                        <div class="form-group flex flex-col">
+                          <label for="{{ label | replace: ' ', '_' }}" class="label {% if settings.use_placeholders %}sr-only{% endif %}">
+                            {{ label }} {% if block.settings.required %}<span class="required">*</span>{% endif %}
+                          </label>
+  
+                          <input type="text" placeholder="{% if settings.use_placeholders %}{{ label }}{% if block.settings.required %}*{% endif %}{% endif %}" 
+                          name="contact[{{ label | replace: ' ', '_' }}]" id="{{ label | replace: ' ', '_' }}" 
+                          class="input mt-2 border border-black px-2 h-[42px] placeholder-primary" {% if block.settings.required %}required="required"{% endif %} />
+                        </div>
+
+                      {% elsif block.type == 'paragraph' %}
+                      {% comment %} Paragraph {% endcomment %}
+                        {{ block.settings.text }}
+
+                      {% elsif block.type == 'dropdown' %}
+                      {% comment %} Dropdown {% endcomment %}
+                        <div class="input-group flex flex-col">
+                          <label for="{{ block.settings.label | replace: ' ', '_' }}" class="label {% if settings.use_placeholders %}sr-only{% endif %}">
+                            {{ block.settings.label }} {% if block.settings.required %}<span class="required">*</span>{% endif %}
+                          </label>
+  
+                          <select class="mt-2 block w-full py-2 px-3 border border-black bg-white shadow-sm" name="contact[{{ block.settings.label | replace: ' ', '_' }}]" {% if block.settings.required %}required="required"{% endif %}>
+                            {% if settings.use_placeholders %}
+                              <option value="" selected disabled>{{ block.settings.label }} {% if block.settings.required %}<span class="required">*</span>{% endif %}</option>
+                            {% endif %}
+                            {% for index in (0..10) %}
+                              {%- capture option -%}options_{{index}}{%- endcapture -%}
+                              {% if forloop.index0 == 0 %}
+                                {% if block.settings.placeholder != blank %}
+                                  <option value="">
+                                    {{ block.settings.placeholder }}
+                                  </option>
+                                {% endif %}
+                              {% else %}
+                                {% if block.settings[option] != blank %}
+                                  <option value="{{ block.settings[option]}}">
+                                    {{ block.settings[option] }}
+                                  </option>
+                                {% endif %}
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+
+                        </div>
+
+                      {% elsif block.type == 'radio' %}
+                      {% comment %} Radio {% endcomment %}
+
+                        {% if block.settings.label != blank %}
+                          {% assign label = block.settings.label %}
+                        {% else %}
+                          {% assign label = 'Option ' | append: forloop.index %}
+                        {% endif %}
+
+                        <div class="input-group flex flex-col">
+                            <label class="label">
+                              {{ label }} {% if block.settings.required %}<span class="required">*</span>{% endif %}
+                            </label>
+    
+                            <ul class="mt-2 contact-form__list">
+                              {% for index in (1..10) %}
+                                {%- capture option -%}options_{{index}}{%- endcapture -%}
+                                {% if block.settings[option] != blank %}
+                                  <li>
+                                    <input type="radio" id="radio[option]" class="radio" name="contact[{{ label }}]" value="{{ block.settings[option] }}" {% if forloop.first %}checked{% endif %}/>
+                                    <label for="radio[option]">
+                                      {{ block.settings[option] }}
+                                    </label>
+                                  </li>
+                                {% endif %}
+                              {% endfor %}
+                            </ul>
+                        </div>
+
+                      {% elsif block.type == 'checkbox' %}
+                      {% comment %} Checkbox {% endcomment %}
+
+                        {% assign options = block.settings.options | split: ';' %}
+                        {% if block.settings.label != blank %}
+                          {% assign label = block.settings.label %}
+                        {% else %}
+                          {% assign label = 'Option ' | append: forloop.index %}
+                        {% endif %}
+                        <div class="input-group flex flex-col">
+                          <label class="label">
+                            {{ label }} {% if block.settings.required %}<span class="required">*</span>{% endif %}
+                          </label>
+  
+                          <ul class="mt-2 contact-form__list" {% if block.settings.required %}data-is-required{% endif %}>
+                            {% for index in (1..10) %}
+                              {%- capture option -%}options_{{index}}{%- endcapture -%}
+                              {% if block.settings[option] != blank %}
+                                <li>
+                                  <input type="checkbox" id="checkbox[option{{ index }}]" class="checkbox" name="contact[{{ label }}]" value="{{ block.settings[option] }}"/>
+                                  <label for="checkbox[option{{ index }}]">
+                                    {{ block.settings[option] }}
+                                  </label>
+                                </li>
+                              {% endif %}
+                            {% endfor %}
+                          </ul>
+                        </div>
+
+                      {% elsif block.type == 'textarea' %}
+                      {% comment %} Textarea {% endcomment %}
+                        <div class="input-group flex flex-col">
+                            <label for="textarea{{ forloop.index }}" class="label {% if settings.use_placeholders %}sr-only{% endif %}">
+                              {{ block.settings.label }} {% if block.settings.required %}<span class="required">*</span>{% endif %}
+                            </label>
+    
+                            <textarea placeholder="{% if settings.use_placeholders %}{{ block.settings.label }}{% if block.settings.required %}*{% endif %}{% endif %}" id="textarea{{ forloop.index }}" 
+                              class="textarea mt-2 border border-black p-2" name="contact[body]" {% if block.settings.required %}required="required"{% endif %}></textarea>
+                        </div>
+
+                      {% elsif block.type == 'email' %}
+                      {% comment %} Email {% endcomment %}
+
+                        {% if block.settings.label != blank %}
+                          {% assign label = block.settings.label %}
+                        {% else %}
+                          {% assign label = 'Option ' | append: forloop.index %}
+                        {% endif %}
+                        <div class="input-group flex flex-col">
+                          <label for="contactFormEmail" class="label {% if settings.use_placeholders %}sr-only{% endif %}">
+                            {{ label }} <span class="required">*</span>
+                          </label>
+  
+                          <input type="email" placeholder="{% if settings.use_placeholders %}{{ label }}*{% if block.settings.required %}*{% endif %}{% endif %}" id="contactFormEmail" class="input mt-2 border border-black px-2 h-[42px] placeholder-primary" 
+                          name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+
+                        </div>
+
+                      {% elsif block.type == 'submit' %}
+                        <button type="submit" class="button__primary">
+                          {{ block.settings.label }}
+                        </button>
+                      {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <input type="hidden" name="challenge" value="false" />
+           
+          {% endform %}
         </div>
-      </div>
-      <div class="field">
-        <input type="tel" id="ContactForm-phone" class="field__input" autocomplete="tel" name="contact[{{ 'templates.contact.form.phone' | t }}]" pattern="[0-9\-]*" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}" placeholder="{{ 'templates.contact.form.phone' | t }}">
-        <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
-      </div>
-      <div class="field">
-        <textarea
-          rows="10"
-          id="ContactForm-body"
-          class="text-area field__input"
-          name="contact[{{ 'templates.contact.form.comment' | t }}]"
-          placeholder="{{ 'templates.contact.form.comment' | t }}"
-        >
-          {{- form.body -}}
-        </textarea>
-        <label class="form__label field__label" for="ContactForm-body">{{ 'templates.contact.form.comment' | t }}</label>
-      </div>
-      <div class="contact__button">
-        <button type="submit" class="button">
-          {{ 'templates.contact.form.send' | t }}
-        </button>
-      </div>
-    {%- endform -%}
+      {% endif %}
+
+    </div>
   </div>
 </div>
 
 {% schema %}
-{
-  "name": "t:sections.contact-form.name",
-  "tag": "section",
-  "class": "section",
-  "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "default": "Contact form",
-      "label": "Heading"
-    },
-    {
-      "type": "select",
-      "id": "color_scheme",
-      "options": [
+  {
+    "name": "Contact",
+    "class": "contact-section",
+    "max_blocks": 10,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "wide",
+        "options": [
+          {
+            "value": "page-width",
+            "label": "Standard"
+          },
+          {
+            "value": "wide",
+            "label": "Wide"
+          }
+        ]
+      },
+      {
+        "type": "image_picker",
+        "id": "content_image",
+        "label": "Image",
+        "info": "1000 x 1000px recommended"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "content_text",
+        "label": "Text"
+      },
+      {
+        "type": "checkbox",
+        "id": "social_enable",
+        "label": "Display social media icons",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "text-left",
+            "label": "Left"
+          },
+          {
+            "value": "text-center",
+            "label": "Center"
+          },
+          {
+            "value": "text-right",
+            "label": "Right"
+          }
+        ],
+        "default": "text-left"
+      },
+      {
+        "type": "header",
+        "content": "Contact form"
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background",
+        "default": "#E5E5E5"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text",
+        "default": "#000000",
+        "info": "Does not apply to placeholders."
+      },
+      {
+        "type": "select",
+        "id": "form_position",
+        "label": "Form position",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "flex-reverse",
+            "label": "Right"
+          }
+        ],
+        "default": "flex-reverse"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Top spacing",
+        "default": 40,
+        "min": 0,
+        "max": 80,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Bottom spacing",
+        "default": 40,
+        "min": 0,
+        "max": 80,
+        "unit": "px"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "checkbox",
+        "name": "Checkbox",
+        "settings": [
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Title",
+            "default": "Select all that apply"
+          },
+          {
+            "type": "checkbox",
+            "id": "required",
+            "label": "Field is required"
+          },
+          {
+            "type": "text",
+            "id": "options_1",
+            "label": "Option 1",
+            "default": "Option 1"
+          },
+          {
+            "type": "text",
+            "id": "options_2",
+            "label": "Option 2",
+            "default": "Option 2"
+          },
+          {
+            "type": "text",
+            "id": "options_3",
+            "label": "Option 3",
+            "default": "Option 3"
+          },
+          {
+            "type": "text",
+            "id": "options_4",
+            "label": "Option 4"
+          },
+          {
+            "type": "text",
+            "id": "options_5",
+            "label": "Option 5"
+          },
+          {
+            "type": "text",
+            "id": "options_6",
+            "label": "Option 6"
+          },
+          {
+            "type": "text",
+            "id": "options_7",
+            "label": "Option 7"
+          },
+          {
+            "type": "text",
+            "id": "options_8",
+            "label": "Option 8"
+          },
+          {
+            "type": "text",
+            "id": "options_9",
+            "label": "Option 9"
+          },
+          {
+            "type": "text",
+            "id": "options_10",
+            "label": "Option 10"
+          }
+        ]
+      },
+      {
+        "type": "email",
+        "name": "Email (required)",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "Email field must be included."
+          },
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Label",
+            "default": "Title"
+          }
+        ]
+      },
+      {
+        "type": "submit",
+        "name": "Submit (required)",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "Submit button field must be included."
+          },
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Label",
+            "default": "Title"
+          }
+        ]
+      },
+      {
+        "type": "dropdown",
+        "name": "Drop-down",
+        "settings": [
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Title",
+            "default": "Make a selection"
+          },
+          {
+            "type": "checkbox",
+            "id": "required",
+            "label": "Field is required"
+          },
+          {
+            "type": "text",
+            "id": "options_1",
+            "label": "Option 1",
+            "default": "Option 1"
+          },
+          {
+            "type": "text",
+            "id": "options_2",
+            "label": "Option 2",
+            "default": "Option 2"
+          },
+          {
+            "type": "text",
+            "id": "options_3",
+            "label": "Option 3",
+            "default": "Option 3"
+          },
+          {
+            "type": "text",
+            "id": "options_4",
+            "label": "Option 4"
+          },
+          {
+            "type": "text",
+            "id": "options_5",
+            "label": "Option 5"
+          },
+          {
+            "type": "text",
+            "id": "options_6",
+            "label": "Option 6"
+          },
+          {
+            "type": "text",
+            "id": "options_7",
+            "label": "Option 7"
+          },
+          {
+            "type": "text",
+            "id": "options_8",
+            "label": "Option 8"
+          },
+          {
+            "type": "text",
+            "id": "options_9",
+            "label": "Option 9"
+          },
+          {
+            "type": "text",
+            "id": "options_10",
+            "label": "Option 10"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "name": "Paragraph",
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this field to display&nbsp;text of any kind, such as&nbsp;standard reply times for inquiries.</p>"
+          }
+        ]
+      },
+      {
+        "type": "radio",
+        "name": "Radio buttons",
+        "settings": [
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Title",
+            "default": "Choose an option"
+          },
+          {
+            "type": "checkbox",
+            "id": "required",
+            "label": "Field is required"
+          },
+          {
+            "type": "text",
+            "id": "options_1",
+            "label": "Option 1",
+            "default": "Option 1"
+          },
+          {
+            "type": "text",
+            "id": "options_2",
+            "label": "Option 2",
+            "default": "Option 2"
+          },
+          {
+            "type": "text",
+            "id": "options_3",
+            "label": "Option 3",
+            "default": "Option 3"
+          },
+          {
+            "type": "text",
+            "id": "options_4",
+            "label": "Option 4"
+          },
+          {
+            "type": "text",
+            "id": "options_5",
+            "label": "Option 5"
+          },
+          {
+            "type": "text",
+            "id": "options_6",
+            "label": "Option 6"
+          },
+          {
+            "type": "text",
+            "id": "options_7",
+            "label": "Option 7"
+          },
+          {
+            "type": "text",
+            "id": "options_8",
+            "label": "Option 8"
+          },
+          {
+            "type": "text",
+            "id": "options_9",
+            "label": "Option 9"
+          },
+          {
+            "type": "text",
+            "id": "options_10",
+            "label": "Option 10"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "name": "Text area",
+        "settings": [
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Title"
+          },
+          {
+            "type": "checkbox",
+            "id": "required",
+            "label": "Field is required"
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "name": "Text field",
+        "settings": [
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Label",
+            "default": "Title"
+          },
+          {
+            "type": "checkbox",
+            "id": "required",
+            "label": "Field is required"
+          }
+        ]
+      }
+    ],
+    "default": {
+      "settings": {
+        "title": "Get in touch today",
+        "content_text": "<p>Customize your contact form to suit your business! Add custom fields like a dropdown menu, checkbox, text fields and more, so that you can gather pertinent info from shoppers right from the get-go, to help answer their inquiries more effectively.</p>"
+      },
+      "blocks": [
         {
-          "value": "accent-1",
-          "label": "t:sections.all.colors.accent_1.label"
+          "type": "textfield",
+          "settings": {
+            "label": "Name",
+            "required": true
+          }
         },
         {
-          "value": "accent-2",
-          "label": "t:sections.all.colors.accent_2.label"
+          "type": "email",
+          "settings": {
+            "label": "Email"
+          }
         },
         {
-          "value": "background-1",
-          "label": "t:sections.all.colors.background_1.label"
-        },
-        {
-          "value": "background-2",
-          "label": "t:sections.all.colors.background_2.label"
-        },
-        {
-          "value": "inverse",
-          "label": "t:sections.all.colors.inverse.label"
+          "type": "textarea",
+          "settings": {
+            "label": "Message",
+            "required": true
+          }
         }
-      ],
-      "default": "background-1",
-      "label": "t:sections.all.colors.label"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_top",
-      "default": 36
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_bottom",
-      "default": 36
+      ]
     }
-  ],
-  "presets": [
-    {
-      "name": "t:sections.contact-form.presets.name"
-    }
-  ]
-}
+  }
 {% endschema %}

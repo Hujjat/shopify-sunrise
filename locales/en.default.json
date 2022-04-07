@@ -215,6 +215,11 @@
         "error_heading": "Please adjust the following:"
       }
     },
+    "forms": {
+      "post_error": "Not all the fields have been filled out correctly",
+      "post_field_error_html": "The <strong>{{ field }}<\/strong> {{ error }}",
+      "required_field": "Indicates a required field"
+    },
     "404": {
       "title": "Page not found",
       "subtext": "404"
