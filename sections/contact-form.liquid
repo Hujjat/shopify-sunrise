@@ -128,8 +128,8 @@
                                 {%- capture option -%}options_{{index}}{%- endcapture -%}
                                 {% if block.settings[option] != blank %}
                                   <li>
-                                    <input type="radio" id="radio[option]" class="radio" name="contact[{{ label }}]" value="{{ block.settings[option] }}" {% if forloop.first %}checked{% endif %}/>
-                                    <label for="radio[option]">
+                                    <input type="radio" id="{{ block.settings[option] | handleize }}" class="radio" name="contact[{{ label }}]" value="{{ block.settings[option] }}" {% if forloop.first %}checked{% endif %}/>
+                                    <label for="{{ block.settings[option] | handleize }}">
                                       {{ block.settings[option] }}
                                     </label>
                                   </li>
