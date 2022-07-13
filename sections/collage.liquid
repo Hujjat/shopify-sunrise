@@ -38,7 +38,7 @@
                         {%- if block.settings.image.width >= 1500 -%}{{ block.settings.image | image_url: width: 1500 }},{%- endif -%}
                         {%- if block.settings.image.width >= 2200 -%}{{ block.settings.image | image_url: width: 2200 }},{%- endif -%}
                         {%- if block.settings.image.width >= 3000 -%}{{ block.settings.image | image_url: width: 3000 }},{%- endif -%}
-                        {{ block.settings.image | image_url: width: 'master' }}"
+                        {{ block.settings.image | image_url: height: 'master', width: block.settings.image.width }}"
                       src="{{ block.settings.image | image_url: width: 1500 }}"
                       sizes="(min-width: {{ settings.page_width }}px) {% if section.blocks.size == 1 %}calc({{ settings.page_width }}px - 100px){% else %}{{ settings.page_width | minus: 100 | times: 0.67 | round }}px{% endif %}, (min-width: 750px){% if section.blocks.size == 1 %} calc(100vw - 100px){% else %} 500px{% endif %}, calc(100vw - 30px)"
                       alt="{{ block.settings.image.alt | escape }}"
@@ -79,7 +79,7 @@
                             {%- if block.settings.cover_image.width >= 1500 -%}{{ block.settings.cover_image | image_url: width: 1500 }},{%- endif -%}
                             {%- if block.settings.cover_image.width >= 2200 -%}{{ block.settings.cover_image | image_url: width: 2200 }},{%- endif -%}
                             {%- if block.settings.cover_image.width >= 3000 -%}{{ block.settings.cover_image | image_url: width: 3000 }},{%- endif -%}
-                            {{ block.settings.cover_image | image_url: width: 'master' }}"
+                            {{ block.settings.cover_image | image_url: height: 'master', width: block.settings.cover_image.width }}"
                           src="{{ block.settings.cover_image | image_url: width: 1500 }}"
                           sizes="(min-width: {{ settings.page_width }}px) {% if section.blocks.size == 1 %}calc({{ settings.page_width }}px - 100px){% else %}{{ settings.page_width | minus: 100 | times: 0.67 | round }}px{% endif %}, (min-width: 750px){% if section.blocks.size == 1 %} calc(100vw - 100px){% else %} 500px{% endif %}, calc(100vw - 30px)"
                           alt="{{ block.settings.description | escape }}"
@@ -110,7 +110,7 @@
                               {%- if block.settings.cover_image.width >= 1500 -%}{{ block.settings.cover_image | image_url: width: 1500 }},{%- endif -%}
                               {%- if block.settings.cover_image.width >= 2200 -%}{{ block.settings.cover_image | image_url: width: 2200 }},{%- endif -%}
                               {%- if block.settings.cover_image.width >= 3000 -%}{{ block.settings.cover_image | image_url: width: 3000 }},{%- endif -%}
-                              {{ block.settings.cover_image | image_url: width: 'master' }}"
+                              {{ block.settings.cover_image | image_url: height: 'master', width: block.settings.cover_image.width }}"
                             src="{{ block.settings.cover_image | image_url: width: 1500 }}"
                             sizes="(min-width: {{ settings.page_width }}px) {% if section.blocks.size == 1 %}calc({{ settings.page_width }}px - 100px){% else %}{{ settings.page_width | minus: 100 | times: 0.67 | round }}px{% endif %}, (min-width: 750px){% if section.blocks.size == 1 %} calc(100vw - 100px){% else %} 500px{% endif %}, calc(100vw - 30px)"
                             alt="{{ block.settings.description | escape }}"

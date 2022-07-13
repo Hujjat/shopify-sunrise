@@ -42,7 +42,7 @@
           {%- if section.settings.image.width >= 2000 -%}{{ section.settings.image | image_url: width: 2000 }},{%- endif -%}
           {%- if section.settings.image.width >= 3000 -%}{{ section.settings.image | image_url: width: 3000 }},{%- endif -%}
           {%- if section.settings.image.width >= 3840 -%}{{ section.settings.image | image_url: width: 3840 }},{%- endif -%}
-          {{ section.settings.image | image_url: width: 'master' }}"
+          {{ section.settings.image | image_url: height: 'master', width: section.settings.image.width }}"
         sizes="{% if section.settings.image_2 != blank and section.settings.stack_images_on_mobile %}(min-width: 750px) 50vw, 100vw{% elsif section.settings.image_2 != blank %}50vw{% else %}100vw{% endif %}"
         src="{{ section.settings.image | image_url: width: 1500 }}"
         loading="lazy"
@@ -68,7 +68,7 @@
           {%- if section.settings.image_2.width >= 2000 -%}{{ section.settings.image_2 | image_url: width: 2000 }},{%- endif -%}
           {%- if section.settings.image_2.width >= 3000 -%}{{ section.settings.image_2 | image_url: width: 3000 }},{%- endif -%}
           {%- if section.settings.image_2.width >= 3840 -%}{{ section.settings.image_2 | image_url: width: 3840 }},{%- endif -%}
-          {{ section.settings.image_2 | image_url: width: 'master' }}"
+          {{ section.settings.image_2 | image_url: height: 'master', width: section.settings.image_2.width }}"
         sizes="{% if section.settings.image != blank and section.settings.stack_images_on_mobile %}(min-width: 750px) 50vw, 100vw{% elsif section.settings.image != blank %}50vw{% else %}100vw{% endif %}"
         src="{{ section.settings.image_2 | image_url: width: 1500 }}"
         loading="lazy"

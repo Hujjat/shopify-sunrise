@@ -44,7 +44,7 @@
                 {%- if card_collection.featured_image.width >= 1000 -%}{{ card_collection.featured_image | image_url: width: 1000 }},{%- endif -%}
                 {%- if card_collection.featured_image.width >= 1500 -%}{{ card_collection.featured_image | image_url: width: 1500 }},{%- endif -%}
                 {%- if card_collection.featured_image.width >= 3000 -%}{{ card_collection.featured_image | image_url: width: 3000 }},{%- endif -%}
-                {{ card_collection.featured_image | image_url: width: 'master' }}"
+                {{ card_collection.featured_image | image_url: height: 'master', width: card_collection.featured_image.width }}"
               src="{{ card_collection.featured_image | image_url: width: 1500 }}"
               sizes="
               (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: columns }}px,

@@ -25,7 +25,7 @@
             {%- if media.preview_image.width >= 2200 -%}{{ media.preview_image | image_url: width: 2200 }},{%- endif -%}
             {%- if media.preview_image.width >= 2890 -%}{{ media.preview_image | image_url: width: 2890 }},{%- endif -%}
             {%- if media.preview_image.width >= 4096 -%}{{ media.preview_image | image_url: width: 4096 }},{%- endif -%}
-            {{ media.preview_image | image_url: width: 'master' }}"
+            {{ media.preview_image | image_url: height: 'master', width: media.preview_image.width }}"
     sizes="(min-width: 750px) calc(100vw - 22rem), 1100px"
     src="{{ media.preview_image | image_url: width: 1445 }}"
     alt="{{ media.alt | escape }}"
@@ -56,7 +56,7 @@
                 {% if media.preview_image.width >= 576 %}{{ media.preview_image | image_url: width: 576 }},{% endif %}
                 {% if media.preview_image.width >= 550 %}{{ media.preview_image | image_url: width: 550 }},{% endif %}
                 {% if media.preview_image.width >= 1100 %}{{ media.preview_image | image_url: width: 1100 }},{% endif %}
-                {{ media.preview_image | image_url: width: 'master' }}"
+                {{ media.preview_image | image_url: height: 'master', width: media.preview_image.width }}"
         src="{{ media | image_url: width: 550 }}"
         sizes="(min-width: 1200px) calc((1200px - 10rem) / 2), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw - 4rem)"
         loading="lazy"
