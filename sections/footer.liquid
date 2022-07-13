@@ -59,7 +59,7 @@
                     {%- if block.settings.image != blank -%}
                       {%- assign image_size = block.settings.image_width -%}
                       <img
-                        srcset= "{{ block.settings.image | image_url: width: image_size }}, {{ block.settings.image | image_url: image_size, scale: 2 }} 2x"
+                        srcset= "{{ block.settings.image | image_url: width: image_size }}, {{ block.settings.image | image_url: width: image_size, scale: 2 }} 2x"
                         src="{{ block.settings.image | image_url: width: 400 }}"
                         alt="{{ block.settings.image.alt | escape }}"
                         loading="lazy"

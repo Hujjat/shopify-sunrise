@@ -17,14 +17,14 @@
 {%- if media.media_type == 'image' -%}
   <img
     class="global-media-settings global-media-settings--no-shadow"
-    srcset="{%- if media.preview_image.width >= 550 -%}{{ media.preview_image | image_url: 550 }},{%- endif -%}
-            {%- if media.preview_image.width >= 1100 -%}{{ media.preview_image | image_url: 1100 }},{%- endif -%}
-            {%- if media.preview_image.width >= 1445 -%}{{ media.preview_image | image_url: 1445 }},{%- endif -%}
-            {%- if media.preview_image.width >= 1680 -%}{{ media.preview_image | image_url: 1680 }},{%- endif -%}
-            {%- if media.preview_image.width >= 2048 -%}{{ media.preview_image | image_url: 2048 }},{%- endif -%}
-            {%- if media.preview_image.width >= 2200 -%}{{ media.preview_image | image_url: 2200 }},{%- endif -%}
-            {%- if media.preview_image.width >= 2890 -%}{{ media.preview_image | image_url: 2890 }},{%- endif -%}
-            {%- if media.preview_image.width >= 4096 -%}{{ media.preview_image | image_url: 4096 }},{%- endif -%}
+    srcset="{%- if media.preview_image.width >= 550 -%}{{ media.preview_image | image_url: width: 550 }},{%- endif -%}
+            {%- if media.preview_image.width >= 1100 -%}{{ media.preview_image | image_url: width: 1100 }},{%- endif -%}
+            {%- if media.preview_image.width >= 1445 -%}{{ media.preview_image | image_url: width: 1445 }},{%- endif -%}
+            {%- if media.preview_image.width >= 1680 -%}{{ media.preview_image | image_url: width: 1680 }},{%- endif -%}
+            {%- if media.preview_image.width >= 2048 -%}{{ media.preview_image | image_url: width: 2048 }},{%- endif -%}
+            {%- if media.preview_image.width >= 2200 -%}{{ media.preview_image | image_url: width: 2200 }},{%- endif -%}
+            {%- if media.preview_image.width >= 2890 -%}{{ media.preview_image | image_url: width: 2890 }},{%- endif -%}
+            {%- if media.preview_image.width >= 4096 -%}{{ media.preview_image | image_url: width: 4096 }},{%- endif -%}
             {{ media.preview_image | image_url: width: 'master' }}"
     sizes="(min-width: 750px) calc(100vw - 22rem), 1100px"
     src="{{ media.preview_image | image_url: width: 1445 }}"
