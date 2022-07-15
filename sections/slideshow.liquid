@@ -60,7 +60,7 @@
               {%- if block.settings.image.width >= 2000 -%}{{ block.settings.image | image_url: width: 2000 }},{%- endif -%}
               {%- if block.settings.image.width >= 3000 -%}{{ block.settings.image | image_url: width: 3000 }},{%- endif -%}
               {%- if block.settings.image.width >= 3840 -%}{{ block.settings.image | image_url: width: 3840 }},{%- endif -%}
-              {{ block.settings.image | image_url: height: 'master', width: block.settings.image.width }}"
+              {{ block.settings.image | image_url: 'master' }}"
               sizes="100vw"
               src="{{ block.settings.image | image_url: width: 1500 }}"
               loading="lazy"

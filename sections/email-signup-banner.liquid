@@ -40,7 +40,7 @@
             {%- if section.settings.image.width >= 2000 -%}{{ section.settings.image | image_url: width: 2000 }},{%- endif -%}
             {%- if section.settings.image.width >= 3000 -%}{{ section.settings.image | image_url: width: 3000 }},{%- endif -%}
             {%- if section.settings.image.width >= 3840 -%}{{ section.settings.image | image_url: width: 3840 }},{%- endif -%}
-            {{ section.settings.image | image_url: height: 'master', width: section.settings.image.width }}"
+            {{ section.settings.image | image_url: 'master' }}"
           sizes="100vw"
           src="{{ section.settings.image | image_url: width: 1500 }}"
           loading="lazy"
